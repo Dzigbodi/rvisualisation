@@ -1,0 +1,1389 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.450">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Creation, fusion et manipulation</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body class="nav-sidebar docked">
+
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./import.html">Manipulation</a></li><li class="breadcrumb-item"><a href="./creationselect.html">Creation, fusion et manipulation</a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation docked overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Tableau de Bord sur R</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">A propos</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Base de R</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./Intro.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Rappel sur les Objets de R</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./logical.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Base de la programmation</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true">
+ <span class="menu-text">Manipulation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./import.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Lecture des données dans R</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./creationselect.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Creation, fusion et manipulation</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./stringmanip.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Expression régulière</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./dplyrexercice.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercice sur <strong><em>dplyr</em></strong></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true">
+ <span class="menu-text">Visualisation</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./vizggplot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Visualisation: ggplot2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./exoggplot.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercice Pratique ggplot2</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#manipulation-des-données-avec-dplyr" id="toc-manipulation-des-données-avec-dplyr" class="nav-link active" data-scroll-target="#manipulation-des-données-avec-dplyr">Manipulation des données avec dplyr</a>
+  <ul class="collapse">
+  <li><a href="#création-dobjet-tibble" id="toc-création-dobjet-tibble" class="nav-link" data-scroll-target="#création-dobjet-tibble">Création d’objet <code>tibble()</code></a></li>
+  <li><a href="#création-ou-transformation-de-variables-mutate" id="toc-création-ou-transformation-de-variables-mutate" class="nav-link" data-scroll-target="#création-ou-transformation-de-variables-mutate">Création ou transformation de variables: <code>mutate()</code></a></li>
+  <li><a href="#créer-ou-manipuler-plusieurs-variables-à-la-fois-across" id="toc-créer-ou-manipuler-plusieurs-variables-à-la-fois-across" class="nav-link" data-scroll-target="#créer-ou-manipuler-plusieurs-variables-à-la-fois-across">Créer ou manipuler plusieurs variables à la fois: <code>across()</code></a></li>
+  <li><a href="#renommer-une-variable-rename" id="toc-renommer-une-variable-rename" class="nav-link" data-scroll-target="#renommer-une-variable-rename">Renommer une variable: <code>rename()</code></a></li>
+  <li><a href="#reordonner-les-variables-relocate" id="toc-reordonner-les-variables-relocate" class="nav-link" data-scroll-target="#reordonner-les-variables-relocate">Reordonner les variables: <code>relocate()</code></a></li>
+  <li><a href="#selectionner-les-variables-select" id="toc-selectionner-les-variables-select" class="nav-link" data-scroll-target="#selectionner-les-variables-select">Selectionner les variables: <code>select()</code></a></li>
+  <li><a href="#autres-fonctions-applicables-à-la-sélection" id="toc-autres-fonctions-applicables-à-la-sélection" class="nav-link" data-scroll-target="#autres-fonctions-applicables-à-la-sélection">Autres fonctions applicables à la sélection</a></li>
+  <li><a href="#recodification-des-variables-recode-et-case_when-case_match" id="toc-recodification-des-variables-recode-et-case_when-case_match" class="nav-link" data-scroll-target="#recodification-des-variables-recode-et-case_when-case_match">Recodification des variables: <code>recode()</code> et <code>case_when()</code>, <code>case_match</code></a></li>
+  <li><a href="#manipulation-des-observations-filter-and-slice" id="toc-manipulation-des-observations-filter-and-slice" class="nav-link" data-scroll-target="#manipulation-des-observations-filter-and-slice">Manipulation des observations: <code>filter()</code> and <code>slice()</code></a></li>
+  <li><a href="#grouper-et-ordonner-les-observations" id="toc-grouper-et-ordonner-les-observations" class="nav-link" data-scroll-target="#grouper-et-ordonner-les-observations">Grouper et ordonner les observations</a></li>
+  <li><a href="#descriptions-des-variables-summarise" id="toc-descriptions-des-variables-summarise" class="nav-link" data-scroll-target="#descriptions-des-variables-summarise">Descriptions des variables: <code>summarise()</code></a></li>
+  </ul></li>
+  <li><a href="#combinaison-des-tables-de-données" id="toc-combinaison-des-tables-de-données" class="nav-link" data-scroll-target="#combinaison-des-tables-de-données">Combinaison des tables de données</a>
+  <ul class="collapse">
+  <li><a href="#ajout-dobservation-de-deux-tables-de-données" id="toc-ajout-dobservation-de-deux-tables-de-données" class="nav-link" data-scroll-target="#ajout-dobservation-de-deux-tables-de-données">Ajout d’observation de deux tables de données</a></li>
+  <li><a href="#ajout-de-variables" id="toc-ajout-de-variables" class="nav-link" data-scroll-target="#ajout-de-variables">Ajout de variables</a></li>
+  <li><a href="#lutilisation-de-pivot_longer-et-de-pivot_wider" id="toc-lutilisation-de-pivot_longer-et-de-pivot_wider" class="nav-link" data-scroll-target="#lutilisation-de-pivot_longer-et-de-pivot_wider">L’utilisation de <code>pivot_longer()</code> et de <code>pivot_wider()</code></a></li>
+  </ul></li>
+  <li><a href="#manipulation-des-chaines-de-caractères" id="toc-manipulation-des-chaines-de-caractères" class="nav-link" data-scroll-target="#manipulation-des-chaines-de-caractères">Manipulation des chaines de caractères</a>
+  <ul class="collapse">
+  <li><a href="#manipulation-des-chaines-de-caractères-1" id="toc-manipulation-des-chaines-de-caractères-1" class="nav-link" data-scroll-target="#manipulation-des-chaines-de-caractères-1">Manipulation des chaines de caractères</a></li>
+  <li><a href="#expressions-régulières" id="toc-expressions-régulières" class="nav-link" data-scroll-target="#expressions-régulières">Expressions régulières</a></li>
+  <li><a href="#exemple" id="toc-exemple" class="nav-link" data-scroll-target="#exemple">Exemple</a></li>
+  <li><a href="#str_match" id="toc-str_match" class="nav-link" data-scroll-target="#str_match"><code>str_match</code></a></li>
+  <li><a href="#str_extract" id="toc-str_extract" class="nav-link" data-scroll-target="#str_extract"><code>str_extract</code></a></li>
+  <li><a href="#match-en-groupe" id="toc-match-en-groupe" class="nav-link" data-scroll-target="#match-en-groupe">Match en groupe</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Creation, fusion et manipulation</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>Cette section introduit la manipulation des données dans <code>R</code>.</p>
+<section id="manipulation-des-données-avec-dplyr" class="level2">
+<h2 class="anchored" data-anchor-id="manipulation-des-données-avec-dplyr">Manipulation des données avec dplyr</h2>
+<section id="création-dobjet-tibble" class="level3">
+<h3 class="anchored" data-anchor-id="création-dobjet-tibble">Création d’objet <code>tibble()</code></h3>
+<p><code>tibble()</code> est une table de données équivalent à <code>data.frame</code>. Il fait partie de la libraire <code>dplyr</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">100</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>n<span class="ot">&lt;-</span><span class="dv">10000</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>Produits<span class="ot">&lt;-</span><span class="fu">tibble</span>(<span class="at">Date=</span><span class="fu">seq.Date</span>(<span class="at">from=</span><span class="fu">as.Date</span>(<span class="st">"1996/01/01"</span>), <span class="at">by=</span><span class="st">"day"</span>, <span class="at">length=</span>n), <span class="at">Categories=</span><span class="fu">sample</span>(LETTERS,n, <span class="at">replace=</span>T), <span class="at">Pays=</span><span class="fu">sample</span>(<span class="fu">c</span>(<span class="st">"Chine"</span>,<span class="st">"Inde"</span>,<span class="st">"USA"</span>,<span class="st">"Canada"</span>,<span class="st">"Togo"</span>,<span class="st">"Cameroun"</span>,<span class="st">"Côte d'ivoire"</span>, <span class="st">"Mexique"</span>), n, <span class="at">replace=</span>T),<span class="at">Prix=</span><span class="fu">runif</span>(n,<span class="at">min =</span> <span class="dv">20</span>, <span class="at">max=</span><span class="dv">100</span> ),</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>                 <span class="at">Quantite=</span><span class="fu">runif</span>(n, <span class="at">min=</span><span class="dv">5</span>, <span class="at">max=</span><span class="dv">10000</span>))</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Produits,<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 5
+  Date       Categories Pays   Prix Quantite
+  &lt;date&gt;     &lt;chr&gt;      &lt;chr&gt; &lt;dbl&gt;    &lt;dbl&gt;
+1 1996-01-01 J          Inde   88.9    3479.
+2 1996-01-02 W          USA    84.0     449.</code></pre>
+</div>
+</div>
+<p>La fonction <code>seq.Date()</code> permet de créer les séquences de date.</p>
+</section>
+<section id="création-ou-transformation-de-variables-mutate" class="level3">
+<h3 class="anchored" data-anchor-id="création-ou-transformation-de-variables-mutate">Création ou transformation de variables: <code>mutate()</code></h3>
+<p>La function <code>mutate()</code> permet de créer une variable ou de transformer une variable existante. Pour attacher les données à une fonction, on sert de l’instruction <code>%&gt;%</code> ou <code>|&gt;</code>. C’est comme si on écrivait: <span class="math inline">\(f(x,y)\)</span>, <span class="math inline">\(x\)</span> étant le <code>tibble</code> ou le <code>data.frame</code> passé en argument. Utilisons la table de données <code>Produits</code> pour créer la valeur des produits</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Produits<span class="ot">&lt;-</span>Produits<span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>          <span class="fu">mutate</span>(<span class="at">Valeur=</span>Prix<span class="sc">*</span>Quantite)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Produits,<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 6
+  Date       Categories Pays   Prix Quantite  Valeur
+  &lt;date&gt;     &lt;chr&gt;      &lt;chr&gt; &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;
+1 1996-01-01 J          Inde   88.9    3479. 309367.
+2 1996-01-02 W          USA    84.0     449.  37737.</code></pre>
+</div>
+</div>
+</section>
+<section id="créer-ou-manipuler-plusieurs-variables-à-la-fois-across" class="level3">
+<h3 class="anchored" data-anchor-id="créer-ou-manipuler-plusieurs-variables-à-la-fois-across">Créer ou manipuler plusieurs variables à la fois: <code>across()</code></h3>
+<p>La fonction <code>mutate()</code> combiner avec <code>across()</code> permet de manipuler plusieurs variables à la fois.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Produits<span class="ot">&lt;-</span>Produits<span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>         <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(Prix, Quantite), \(x) <span class="fu">round</span>(x, <span class="dv">0</span>)))</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Produits,<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 2 × 6
+  Date       Categories Pays   Prix Quantite  Valeur
+  &lt;date&gt;     &lt;chr&gt;      &lt;chr&gt; &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt;
+1 1996-01-01 J          Inde     89     3479 309367.
+2 1996-01-02 W          USA      84      449  37737.</code></pre>
+</div>
+</div>
+<ul>
+<li>Avec le package <code>lubridate</code> nous pouvons extraire les années: <code>year()</code>, les mois: <code>month()</code>, les trimestres: <code>quarter()</code></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>Produits<span class="ot">&lt;-</span>Produits<span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>          <span class="fu">mutate</span>(<span class="at">Annee=</span><span class="fu">year</span>(Date),</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>                 <span class="at">Mois=</span><span class="fu">month</span>(Date),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>                 <span class="at">Trimestre=</span><span class="fu">quarter</span>(Date))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="renommer-une-variable-rename" class="level3">
+<h3 class="anchored" data-anchor-id="renommer-une-variable-rename">Renommer une variable: <code>rename()</code></h3>
+<p>Pour renommer une variable on utilise la fonction <code>rename(nouvelle_variable=ancienne_variable)</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Produits_renom<span class="ot">&lt;-</span>Produits<span class="sc">|&gt;</span><span class="fu">rename</span>(<span class="st">`</span><span class="at">Pays de provenance</span><span class="st">`</span><span class="ot">=</span>Pays),<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 9
+  Date       Categories `Pays de provenance`  Prix Quantite  Valeur Annee  Mois
+  &lt;date&gt;     &lt;chr&gt;      &lt;chr&gt;                &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1 1996-01-01 J          Inde                    89     3479 309367.  1996     1
+2 1996-01-02 W          USA                     84      449  37737.  1996     1
+3 1996-01-03 F          Côte d'ivoire           26     5019 129072.  1996     1
+# ℹ 1 more variable: Trimestre &lt;int&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="reordonner-les-variables-relocate" class="level3">
+<h3 class="anchored" data-anchor-id="reordonner-les-variables-relocate">Reordonner les variables: <code>relocate()</code></h3>
+<p>La fonction <code>relocate</code> permet de réordornner les variables dans une table.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>Produits_relo<span class="ot">&lt;-</span>Produits<span class="sc">|&gt;</span><span class="fu">relocate</span>(Date, Annee,Trimestre, Mois, Pays,Categories)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Produits_relo,<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 9
+  Date       Annee Trimestre  Mois Pays         Categories  Prix Quantite Valeur
+  &lt;date&gt;     &lt;dbl&gt;     &lt;int&gt; &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt;      &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;
+1 1996-01-01  1996         1     1 Inde         J             89     3479 3.09e5
+2 1996-01-02  1996         1     1 USA          W             84      449 3.77e4
+3 1996-01-03  1996         1     1 Côte d'ivoi… F             26     5019 1.29e5</code></pre>
+</div>
+</div>
+</section>
+<section id="selectionner-les-variables-select" class="level3">
+<h3 class="anchored" data-anchor-id="selectionner-les-variables-select">Selectionner les variables: <code>select()</code></h3>
+<p>La fonction <code>select()</code> permet de selectionner les variables</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>Produits_valeur<span class="ot">&lt;-</span>Produits<span class="sc">|&gt;</span><span class="fu">select</span>(Date, Pays,Categories,Valeur)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Produits_valeur,<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 4
+  Date       Pays          Categories  Valeur
+  &lt;date&gt;     &lt;chr&gt;         &lt;chr&gt;        &lt;dbl&gt;
+1 1996-01-01 Inde          J          309367.
+2 1996-01-02 USA           W           37737.
+3 1996-01-03 Côte d'ivoire F          129072.</code></pre>
+</div>
+</div>
+<p>On peut exclure les variables en utilisant la négation <code>!</code> ou <code>-</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>Produits_valeur<span class="ot">&lt;-</span>Produits<span class="sc">|&gt;</span><span class="fu">select</span>(<span class="sc">-</span><span class="fu">c</span>(Prix,Quantite))</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Produits_valeur,<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 7
+  Date       Categories Pays           Valeur Annee  Mois Trimestre
+  &lt;date&gt;     &lt;chr&gt;      &lt;chr&gt;           &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;int&gt;
+1 1996-01-01 J          Inde          309367.  1996     1         1
+2 1996-01-02 W          USA            37737.  1996     1         1
+3 1996-01-03 F          Côte d'ivoire 129072.  1996     1         1</code></pre>
+</div>
+</div>
+</section>
+<section id="autres-fonctions-applicables-à-la-sélection" class="level3">
+<h3 class="anchored" data-anchor-id="autres-fonctions-applicables-à-la-sélection">Autres fonctions applicables à la sélection</h3>
+<p>Les fonctions <code>contains()</code> , <code>ends_with()</code>, <code>starts_with()</code>, <code>num_range(prefic, ordre)</code>, <code>all_of()</code> et <code>any_of()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Produits_cont<span class="ot">&lt;-</span>Produits<span class="sc">|&gt;</span><span class="fu">select</span>(<span class="fu">contains</span>(<span class="st">"p"</span>)),<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 2
+  Pays           Prix
+  &lt;chr&gt;         &lt;dbl&gt;
+1 Inde             89
+2 USA              84
+3 Côte d'ivoire    26
+4 Chine            31
+5 Chine            78</code></pre>
+</div>
+</div>
+</section>
+<section id="recodification-des-variables-recode-et-case_when-case_match" class="level3">
+<h3 class="anchored" data-anchor-id="recodification-des-variables-recode-et-case_when-case_match">Recodification des variables: <code>recode()</code> et <code>case_when()</code>, <code>case_match</code></h3>
+<p>Nous pouvons créer une variable par recodification en utilisant <code>case_when()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>Produits<span class="ot">&lt;-</span>Produits<span class="sc">|&gt;</span><span class="fu">mutate</span>(<span class="at">Continent=</span><span class="fu">case_when</span>(</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  Pays<span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Chine"</span>,<span class="st">"Inde"</span>)<span class="sc">~</span> <span class="st">"Asie"</span>,</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  Pays<span class="sc">%in%</span><span class="fu">c</span>(<span class="st">"USA"</span>,<span class="st">"Canada"</span>,<span class="st">"Mexique"</span>)<span class="sc">~</span><span class="st">"Amerique"</span>,</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>  Pays<span class="sc">%in%</span><span class="fu">c</span>(<span class="st">"Togo"</span>,<span class="st">"Cameroun"</span>,<span class="st">"Côte d'ivoire"</span>)<span class="sc">~</span><span class="st">"Afrique"</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>))</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Produits,<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 10
+  Date       Categories Pays          Prix Quantite Valeur Annee  Mois Trimestre
+  &lt;date&gt;     &lt;chr&gt;      &lt;chr&gt;        &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;int&gt;
+1 1996-01-01 J          Inde            89     3479 3.09e5  1996     1         1
+2 1996-01-02 W          USA             84      449 3.77e4  1996     1         1
+3 1996-01-03 F          Côte d'ivoi…    26     5019 1.29e5  1996     1         1
+# ℹ 1 more variable: Continent &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>L’utilisation de <code>case_match()</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>Produits<span class="ot">&lt;-</span>Produits<span class="sc">|&gt;</span><span class="fu">mutate</span>(<span class="at">Continent=</span><span class="fu">case_match</span>(</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>  Pays,</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>   <span class="fu">c</span>(<span class="st">"Chine"</span>,<span class="st">"Inde"</span>)<span class="sc">~</span> <span class="st">"Asie"</span>,</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a> <span class="fu">c</span>(<span class="st">"USA"</span>,<span class="st">"Canada"</span>,<span class="st">"Mexique"</span>)<span class="sc">~</span><span class="st">"Amerique"</span>,</span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">c</span>(<span class="st">"Togo"</span>,<span class="st">"Cameroun"</span>,<span class="st">"Côte d'ivoire"</span>)<span class="sc">~</span><span class="st">"Afrique"</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a>))</span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Produits,<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 10
+  Date       Categories Pays          Prix Quantite Valeur Annee  Mois Trimestre
+  &lt;date&gt;     &lt;chr&gt;      &lt;chr&gt;        &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;int&gt;
+1 1996-01-01 J          Inde            89     3479 3.09e5  1996     1         1
+2 1996-01-02 W          USA             84      449 3.77e4  1996     1         1
+3 1996-01-03 F          Côte d'ivoi…    26     5019 1.29e5  1996     1         1
+# ℹ 1 more variable: Continent &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>On peut aussi utiliser <code>recode()</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>Produits<span class="ot">&lt;-</span>Produits<span class="sc">|&gt;</span><span class="fu">mutate</span>(<span class="at">Continent=</span><span class="fu">recode</span>(</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  Pays,</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="st">"Chine"</span><span class="ot">=</span> <span class="st">"Asie"</span>,</span>
+<span id="cb22-4"><a href="#cb22-4" aria-hidden="true" tabindex="-1"></a><span class="st">"Inde"</span><span class="ot">=</span><span class="st">"Asie"</span>,</span>
+<span id="cb22-5"><a href="#cb22-5" aria-hidden="true" tabindex="-1"></a><span class="st">"USA"</span><span class="ot">=</span><span class="st">"Amerique"</span>,</span>
+<span id="cb22-6"><a href="#cb22-6" aria-hidden="true" tabindex="-1"></a><span class="st">"Canada"</span><span class="ot">=</span><span class="st">"Amerique"</span>,</span>
+<span id="cb22-7"><a href="#cb22-7" aria-hidden="true" tabindex="-1"></a><span class="st">"Togo"</span><span class="ot">=</span><span class="st">"Afrique"</span>,</span>
+<span id="cb22-8"><a href="#cb22-8" aria-hidden="true" tabindex="-1"></a><span class="st">"Cameroun"</span><span class="ot">=</span><span class="st">"Afrique"</span>,</span>
+<span id="cb22-9"><a href="#cb22-9" aria-hidden="true" tabindex="-1"></a><span class="st">"Côte d'Ivoire"</span><span class="ot">=</span><span class="st">"Afrique"</span></span>
+<span id="cb22-10"><a href="#cb22-10" aria-hidden="true" tabindex="-1"></a>))</span>
+<span id="cb22-11"><a href="#cb22-11" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Produits,<span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 3 × 10
+  Date       Categories Pays          Prix Quantite Valeur Annee  Mois Trimestre
+  &lt;date&gt;     &lt;chr&gt;      &lt;chr&gt;        &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;int&gt;
+1 1996-01-01 J          Inde            89     3479 3.09e5  1996     1         1
+2 1996-01-02 W          USA             84      449 3.77e4  1996     1         1
+3 1996-01-03 F          Côte d'ivoi…    26     5019 1.29e5  1996     1         1
+# ℹ 1 more variable: Continent &lt;chr&gt;</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercice
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ul>
+<li>Recoder la variable <code>Categories</code> en <code>Classe_Categories</code> suivant la regroupement ci-après:
+<ul>
+<li>A-G: 1</li>
+<li>H-P: 2</li>
+<li>Q-T: 3</li>
+<li>U-Z: 4</li>
+</ul></li>
+<li>Transformer cette variable en format <code>factor</code> dont les libellés sont: “Bas de gamme”, “Moyen de gamme”, “Haut de gamme” ,“Prémium”</li>
+</ul>
+</div>
+</div>
+</section>
+<section id="manipulation-des-observations-filter-and-slice" class="level3">
+<h3 class="anchored" data-anchor-id="manipulation-des-observations-filter-and-slice">Manipulation des observations: <code>filter()</code> and <code>slice()</code></h3>
+<p>La fonction <code>filter()</code> permet de filtrer les observations selon des critères données.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>Produits_Cat<span class="ot">&lt;-</span>Produits<span class="sc">|&gt;</span><span class="fu">filter</span>(Categories<span class="sc">%in%</span><span class="fu">c</span>(<span class="st">"A"</span>,<span class="st">"B"</span>,<span class="st">"F"</span>))</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Produits_Cat,<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 10
+  Date       Categories Pays          Prix Quantite Valeur Annee  Mois Trimestre
+  &lt;date&gt;     &lt;chr&gt;      &lt;chr&gt;        &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;int&gt;
+1 1996-01-03 F          Côte d'ivoi…    26     5019 1.29e5  1996     1         1
+2 1996-01-12 F          Togo            91     3260 2.97e5  1996     1         1
+3 1996-01-15 F          Chine           58      673 3.89e4  1996     1         1
+4 1996-01-16 B          Chine           68     2994 2.03e5  1996     1         1
+5 1996-01-29 B          Cameroun        57     8683 4.97e5  1996     1         1
+# ℹ 1 more variable: Continent &lt;chr&gt;</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>Produits_min<span class="ot">&lt;-</span>Produits<span class="sc">|&gt;</span><span class="fu">filter</span>(Prix<span class="sc">==</span><span class="fu">min</span>(Prix))</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Produits_min,<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 10
+  Date       Categories Pays          Prix Quantite Valeur Annee  Mois Trimestre
+  &lt;date&gt;     &lt;chr&gt;      &lt;chr&gt;        &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;int&gt;
+1 1996-02-19 V          Canada          20     1588 3.25e4  1996     2         1
+2 1996-07-25 G          Chine           20     7664 1.55e5  1996     7         3
+3 1997-04-03 A          Canada          20     5407 1.09e5  1997     4         2
+4 1997-04-21 Y          Côte d'ivoi…    20     5572 1.12e5  1997     4         2
+5 1997-07-27 O          Chine           20     3034 6.08e4  1997     7         3
+# ℹ 1 more variable: Continent &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>La fonction <code>slice()</code> permet de sélectionner les lignes d’observations en précisant les numéros de lignes.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>(Cinq_premieres_obs<span class="ot">&lt;-</span>Produits<span class="sc">|&gt;</span><span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 5 × 10
+  Date       Categories Pays          Prix Quantite Valeur Annee  Mois Trimestre
+  &lt;date&gt;     &lt;chr&gt;      &lt;chr&gt;        &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;int&gt;
+1 1996-01-01 J          Inde            89     3479 3.09e5  1996     1         1
+2 1996-01-02 W          USA             84      449 3.77e4  1996     1         1
+3 1996-01-03 F          Côte d'ivoi…    26     5019 1.29e5  1996     1         1
+4 1996-01-04 P          Chine           31      354 1.09e4  1996     1         1
+5 1996-01-05 S          Chine           78     7739 6.07e5  1996     1         1
+# ℹ 1 more variable: Continent &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>La fonction <code>slice_sample()</code> permet de sélectionner aléatoirement les lignes d’observations. La synthaxe <code>slice_sample(.data,...,n,prop,weight_by, replace=FALSE)</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>(Produits_sample<span class="ot">&lt;-</span>Produits<span class="sc">|&gt;</span><span class="fu">slice_sample</span>(<span class="at">n=</span><span class="dv">10</span>, <span class="at">replace=</span>F))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 10
+   Date       Categories Pays         Prix Quantite Valeur Annee  Mois Trimestre
+   &lt;date&gt;     &lt;chr&gt;      &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;int&gt;
+ 1 2019-07-21 A          Togo           72      894 6.40e4  2019     7         3
+ 2 2007-06-11 F          Canada         23     2057 4.81e4  2007     6         2
+ 3 1999-08-01 L          Togo           72     1578 1.13e5  1999     8         3
+ 4 2002-04-08 R          Mexique        47     8838 4.11e5  2002     4         2
+ 5 2015-04-09 S          Canada         45     6497 2.89e5  2015     4         2
+ 6 1996-08-14 E          Canada         78     3889 3.05e5  1996     8         3
+ 7 2013-01-08 M          Côte d'ivo…    56     7591 4.28e5  2013     1         1
+ 8 2016-08-04 V          Cameroun       37     2958 1.09e5  2016     8         3
+ 9 2012-05-09 H          Inde           83     1267 1.05e5  2012     5         2
+10 2009-01-15 T          Canada         23     5809 1.31e5  2009     1         1
+# ℹ 1 more variable: Continent &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>Nous pouvons faire une selection aléatoire proportionnelle selon une variable de taille</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>(Produits_poids<span class="ot">&lt;-</span>Produits<span class="sc">|&gt;</span><span class="fu">slice_sample</span>(<span class="at">n=</span><span class="dv">10</span>, <span class="at">weight_by =</span> Valeur))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 10
+   Date       Categories Pays         Prix Quantite Valeur Annee  Mois Trimestre
+   &lt;date&gt;     &lt;chr&gt;      &lt;chr&gt;       &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;int&gt;
+ 1 2009-09-02 Q          Togo           69     6551 4.51e5  2009     9         3
+ 2 2014-03-28 E          Chine          90     7817 7.00e5  2014     3         1
+ 3 2011-07-13 K          Côte d'ivo…    76     7562 5.73e5  2011     7         3
+ 4 1997-07-01 I          Togo           91     9023 8.21e5  1997     7         3
+ 5 2021-01-28 F          Inde           59     4388 2.58e5  2021     1         1
+ 6 1996-06-13 E          Côte d'ivo…    94     9608 9.00e5  1996     6         2
+ 7 2003-10-05 F          Mexique        51     2296 1.18e5  2003    10         4
+ 8 2021-09-12 S          Cameroun      100     5800 5.77e5  2021     9         3
+ 9 2016-08-08 O          Côte d'ivo…    38     4413 1.68e5  2016     8         3
+10 2021-02-02 I          Togo           55     9625 5.26e5  2021     2         1
+# ℹ 1 more variable: Continent &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>La fonction <code>distinct()</code> permet d’éliminer les doublons dans la table des données.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>Produits_Cat_Pays<span class="ot">&lt;-</span>Produits<span class="sc">|&gt;</span><span class="fu">distinct</span>(Categories, Pays)</span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Produits_Cat_Pays)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 2
+  Categories Pays         
+  &lt;chr&gt;      &lt;chr&gt;        
+1 J          Inde         
+2 W          USA          
+3 F          Côte d'ivoire
+4 P          Chine        
+5 S          Chine        
+6 Y          Mexique      </code></pre>
+</div>
+</div>
+</section>
+<section id="grouper-et-ordonner-les-observations" class="level3">
+<h3 class="anchored" data-anchor-id="grouper-et-ordonner-les-observations">Grouper et ordonner les observations</h3>
+<p>La fonction <code>group_by()</code> permet de grouper les observations selon une liste de variables</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>Produits_Pays<span class="ot">&lt;-</span>Produits<span class="sc">|&gt;</span><span class="fu">group_by</span>(Pays)<span class="sc">|&gt;</span><span class="fu">slice</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Produits_Pays)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 10
+# Groups:   Pays [3]
+  Date       Categories Pays      Prix Quantite  Valeur Annee  Mois Trimestre
+  &lt;date&gt;     &lt;chr&gt;      &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;int&gt;
+1 1996-01-07 Z          Cameroun    91      344  31228.  1996     1         1
+2 1996-01-10 W          Cameroun    21     8180 168668.  1996     1         1
+3 1996-01-08 N          Canada      28     5622 154938.  1996     1         1
+4 1996-01-22 R          Canada      35     5044 177428.  1996     1         1
+5 1996-01-04 P          Chine       31      354  10854.  1996     1         1
+6 1996-01-05 S          Chine       78     7739 607091.  1996     1         1
+# ℹ 1 more variable: Continent &lt;chr&gt;</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercice
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Utiliser la fonction <code>slice_min()</code> et <code>slice_max()</code>, avec pour critère la variable Valeur dans chaque catégorie</p>
+</div>
+</div>
+<p>La fonction <code>arrange()</code> permet d’ordonner les observations selon une variable ou une liste de variable. Lorsqu’on l’utilise avec la <code>group_by()</code> on spécifie si le tri se fera par groupe en utilisant <code>.by_group=TRUE</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>Produits_ord<span class="ot">&lt;-</span>Produits<span class="sc">|&gt;</span><span class="fu">group_by</span>(Pays,Categories)<span class="sc">|&gt;</span></span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">arrange</span>(Valeur, <span class="at">.by_group =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Produits_ord)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 10
+# Groups:   Pays, Categories [1]
+  Date       Categories Pays      Prix Quantite Valeur Annee  Mois Trimestre
+  &lt;date&gt;     &lt;chr&gt;      &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;int&gt;
+1 2022-12-26 A          Cameroun    63      220 13900.  2022    12         4
+2 2000-09-18 A          Cameroun    20      869 17486.  2000     9         3
+3 2001-10-04 A          Cameroun    58      723 42166.  2001    10         4
+4 2009-03-16 A          Cameroun    87      501 43800.  2009     3         1
+5 2018-06-14 A          Cameroun    26     2183 57215.  2018     6         2
+6 1997-08-31 A          Cameroun    84      723 60427.  1997     8         3
+# ℹ 1 more variable: Continent &lt;chr&gt;</code></pre>
+</div>
+</div>
+<p>Pour préciser l’ordre décroissante on utilise la fonction <code>desc()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>Produits_ord<span class="ot">&lt;-</span>Produits<span class="sc">|&gt;</span><span class="fu">group_by</span>(Pays,Categories)<span class="sc">|&gt;</span></span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>                       <span class="fu">arrange</span>(<span class="fu">desc</span>(Valeur), <span class="at">.by_group =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Produits_ord)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 10
+# Groups:   Pays, Categories [1]
+  Date       Categories Pays      Prix Quantite  Valeur Annee  Mois Trimestre
+  &lt;date&gt;     &lt;chr&gt;      &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;int&gt;
+1 1997-08-30 A          Cameroun   100     9807 980638.  1997     8         3
+2 2006-04-06 A          Cameroun    93     9599 888097.  2006     4         2
+3 2017-05-19 A          Cameroun    96     7835 755798.  2017     5         2
+4 2004-04-03 A          Cameroun    98     6573 642084.  2004     4         2
+5 2021-02-26 A          Cameroun    64     9917 635315.  2021     2         1
+6 1996-10-10 A          Cameroun    94     6373 600292.  1996    10         4
+# ℹ 1 more variable: Continent &lt;chr&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="descriptions-des-variables-summarise" class="level3">
+<h3 class="anchored" data-anchor-id="descriptions-des-variables-summarise">Descriptions des variables: <code>summarise()</code></h3>
+<p>La fonction <code>summarise()</code> est appliquée aux colonnes pour créer une nouvelle table. Dans ce cas on peut utiliser les fonctions comme:</p>
+<ul>
+<li>Fonction de comptage
+<ul>
+<li><code>n()</code>: nombre de valeurs ou de lignes</li>
+<li><code>n_distinct()</code>: nombre unique</li>
+<li><code>sum(!is.na())</code>: nombre de valeurs non manquantes</li>
+</ul></li>
+<li>Fonction de positions
+<ul>
+<li><code>mean()</code>: moyenne</li>
+<li><code>median()</code></li>
+</ul></li>
+<li>Fonction de rang
+<ul>
+<li><code>quantile()</code>: Nombre de quantile</li>
+<li><code>min()</code>: valeur minimum</li>
+<li><code>max()</code>: valeur maximum</li>
+</ul></li>
+<li>Fonction de dispersion
+<ul>
+<li><code>IQR()</code>: interval inter-quartile</li>
+<li><code>mad()</code>: Ecart médian absolu</li>
+<li><code>sd()</code> : standard deviation</li>
+<li><code>var()</code>: variance</li>
+</ul></li>
+</ul>
+<p>Par ailleurs, l’utilisateur peut écrire sa fonction et la passer dans la fonction <code>summarise()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>Produits<span class="sc">|&gt;</span><span class="fu">summarise</span>(<span class="at">Valeur_Min=</span><span class="fu">min</span>(Valeur))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 1
+  Valeur_Min
+       &lt;dbl&gt;
+1       169.</code></pre>
+</div>
+</div>
+<p>La fonction summarise peut être combinée aussi avec la fonction <code>group_by()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>Produits<span class="sc">|&gt;</span><span class="fu">group_by</span>(Pays)<span class="sc">|&gt;</span><span class="fu">summarise</span>(<span class="at">Valeur_Max=</span><span class="fu">max</span>(Valeur))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 8 × 2
+  Pays          Valeur_Max
+  &lt;chr&gt;              &lt;dbl&gt;
+1 Cameroun         990625.
+2 Canada           953725.
+3 Chine            959583.
+4 Côte d'ivoire    989122.
+5 Inde             949136.
+6 Mexique          966088.
+7 Togo             991773.
+8 USA              961566.</code></pre>
+</div>
+</div>
+<p>Utiliser la fonction <code>across()</code> pour une application sur plusieurs variables</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>Produits<span class="sc">|&gt;</span><span class="fu">group_by</span>(Annee,Pays)<span class="sc">|&gt;</span><span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">c</span>(Prix, Quantite, Valeur),\(x)<span class="fu">min</span>(x)), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 224 × 5
+   Annee Pays           Prix Quantite Valeur
+   &lt;dbl&gt; &lt;chr&gt;         &lt;dbl&gt;    &lt;dbl&gt;  &lt;dbl&gt;
+ 1  1996 Cameroun         21       86  6681.
+ 2  1996 Canada           20      154  5941.
+ 3  1996 Chine            20      354 10854.
+ 4  1996 Côte d'ivoire    21      182  9681.
+ 5  1996 Inde             21      163  4974.
+ 6  1996 Mexique          23      132  3009.
+ 7  1996 Togo             23        9   302.
+ 8  1996 USA              25      179 11077.
+ 9  1997 Cameroun         20      178 11433.
+10  1997 Canada           20       81  4575.
+# ℹ 214 more rows</code></pre>
+</div>
+</div>
+<p>Utiliser la fonction <code>across()</code> avec une liste de fonctions</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>Produits<span class="sc">|&gt;</span><span class="fu">group_by</span>(Annee,Pays)<span class="sc">|&gt;</span><span class="fu">summarise</span>(<span class="fu">across</span>(<span class="fu">c</span>(Prix, Quantite, Valeur),<span class="fu">list</span>(<span class="at">min=</span>min, <span class="at">max=</span>max, <span class="at">mean=</span>mean)),<span class="at">.groups =</span> <span class="st">"drop"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 224 × 11
+   Annee Pays          Prix_min Prix_max Prix_mean Quantite_min Quantite_max
+   &lt;dbl&gt; &lt;chr&gt;            &lt;dbl&gt;    &lt;dbl&gt;     &lt;dbl&gt;        &lt;dbl&gt;        &lt;dbl&gt;
+ 1  1996 Cameroun            21       99      61.4           86         9913
+ 2  1996 Canada              20       98      57.7          154         9375
+ 3  1996 Chine               20       98      55.4          354         9270
+ 4  1996 Côte d'ivoire       21       99      65.2          182         9957
+ 5  1996 Inde                21       99      53.4          163         9614
+ 6  1996 Mexique             23      100      61.2          132         9846
+ 7  1996 Togo                23       99      57.4            9         8837
+ 8  1996 USA                 25       97      61.6          179         9791
+ 9  1997 Cameroun            20      100      62.1          178         9946
+10  1997 Canada              20       99      65.5           81         9772
+# ℹ 214 more rows
+# ℹ 4 more variables: Quantite_mean &lt;dbl&gt;, Valeur_min &lt;dbl&gt;, Valeur_max &lt;dbl&gt;,
+#   Valeur_mean &lt;dbl&gt;</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="combinaison-des-tables-de-données" class="level2">
+<h2 class="anchored" data-anchor-id="combinaison-des-tables-de-données">Combinaison des tables de données</h2>
+<p>Dans cette section, nous aborderons la fusion des tables et l’ajout des observations à une table.</p>
+<section id="ajout-dobservation-de-deux-tables-de-données" class="level3">
+<h3 class="anchored" data-anchor-id="ajout-dobservation-de-deux-tables-de-données">Ajout d’observation de deux tables de données</h3>
+<p>Pour ajouter deux tables données, il faudra que les deux tables aient le même nombre de colonnes. On utilise pour cela la fonction <code>bind_rows()</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a>Produits1<span class="ot">&lt;-</span>Produits<span class="sc">|&gt;</span><span class="fu">filter</span>(Continent<span class="sc">==</span><span class="st">"Asie"</span>)</span>
+<span id="cb50-2"><a href="#cb50-2" aria-hidden="true" tabindex="-1"></a>Produits2<span class="ot">&lt;-</span>Produits<span class="sc">|&gt;</span><span class="fu">filter</span>(Continent<span class="sc">!=</span><span class="st">"Asie"</span>)</span>
+<span id="cb50-3"><a href="#cb50-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-4"><a href="#cb50-4" aria-hidden="true" tabindex="-1"></a>Produits_Rows<span class="ot">&lt;-</span>Produits1<span class="sc">|&gt;</span><span class="fu">bind_rows</span>(Produits2)</span>
+<span id="cb50-5"><a href="#cb50-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb50-6"><a href="#cb50-6" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Produits_Rows)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 6 × 10
+  Date       Categories Pays   Prix Quantite  Valeur Annee  Mois Trimestre
+  &lt;date&gt;     &lt;chr&gt;      &lt;chr&gt; &lt;dbl&gt;    &lt;dbl&gt;   &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;     &lt;int&gt;
+1 1996-01-01 J          Inde     89     3479 309367.  1996     1         1
+2 1996-01-04 P          Chine    31      354  10854.  1996     1         1
+3 1996-01-05 S          Chine    78     7739 607091.  1996     1         1
+4 1996-01-09 L          Inde     63      163  10285.  1996     1         1
+5 1996-01-13 D          Chine    31     5451 170341.  1996     1         1
+6 1996-01-15 F          Chine    58      673  38865.  1996     1         1
+# ℹ 1 more variable: Continent &lt;chr&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="ajout-de-variables" class="level3">
+<h3 class="anchored" data-anchor-id="ajout-de-variables">Ajout de variables</h3>
+<p>L’ajout de variables peut se faire par la fonction <code>bind_cols()</code> ou par fusion. Dans le cas de l’utilisation de la variable <code>bind_cols()</code>, il faut s’assurer que les lignes soient correspondantes.</p>
+<p>Nous nous concentrons sur la fusion de données car c’est le cas le plus intéressant.</p>
+<ul>
+<li><code>inner_join()</code> C’est une fonction qui permet de fusionner les élements communs de deux tables selon une clé de fusion.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>Prix_df<span class="ot">&lt;-</span>Prix<span class="sc">|&gt;</span><span class="fu">inner_join</span>(dictionnaire, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"CODE"</span><span class="ot">=</span><span class="st">"SERIE"</span>))</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Prix_df,<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           CODE                                             SOURCE     Date
+1 SSSSR3021M0BP Institut National de la Statistique, Base 100=2014 2/1/2000
+2 SSSSR3021M0BP Institut National de la Statistique, Base 100=2014 3/1/2000
+  Prix          PAYS        COMMODITE
+1    0 GUINEE BISSAU 01--Alimentation
+2    0 GUINEE BISSAU 01--Alimentation</code></pre>
+</div>
+</div>
+<ul>
+<li><code>left_join()</code> Soit deux tables A et B ayant une clé commune. Si on veut ramèner les observations qui de A qui sont dans B, on utilisera la fonction <code>left_join()</code> selon la clée</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb54"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb54-1"><a href="#cb54-1" aria-hidden="true" tabindex="-1"></a>Prix_df<span class="ot">&lt;-</span>Prix<span class="sc">|&gt;</span><span class="fu">left_join</span>(dictionnaire, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"CODE"</span><span class="ot">=</span><span class="st">"SERIE"</span>))</span>
+<span id="cb54-2"><a href="#cb54-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Prix_df,<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           CODE                                             SOURCE     Date
+1 SSSSR3021M0BP Institut National de la Statistique, Base 100=2014 2/1/2000
+2 SSSSR3021M0BP Institut National de la Statistique, Base 100=2014 3/1/2000
+  Prix          PAYS        COMMODITE
+1    0 GUINEE BISSAU 01--Alimentation
+2    0 GUINEE BISSAU 01--Alimentation</code></pre>
+</div>
+</div>
+<ul>
+<li><code>right_join()</code> C’est une fonction similaire à <code>left_join()</code>, mais danse que ramène les observations de B qui sont dans A.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>Prix_df<span class="ot">&lt;-</span>Prix<span class="sc">|&gt;</span><span class="fu">right_join</span>(dictionnaire, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"CODE"</span><span class="ot">=</span><span class="st">"SERIE"</span>))</span>
+<span id="cb56-2"><a href="#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Prix_df,<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           CODE                                             SOURCE     Date
+1 SSSSR3021M0BP Institut National de la Statistique, Base 100=2014 2/1/2000
+2 SSSSR3021M0BP Institut National de la Statistique, Base 100=2014 3/1/2000
+  Prix          PAYS        COMMODITE
+1    0 GUINEE BISSAU 01--Alimentation
+2    0 GUINEE BISSAU 01--Alimentation</code></pre>
+</div>
+</div>
+<ul>
+<li><code>full_join()</code> La fonction <code>full_join()</code> de retenir toutes les observations des deux tables.</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>Prix_df<span class="ot">&lt;-</span>Prix<span class="sc">|&gt;</span><span class="fu">full_join</span>(dictionnaire, <span class="at">by=</span><span class="fu">c</span>(<span class="st">"CODE"</span><span class="ot">=</span><span class="st">"SERIE"</span>))</span>
+<span id="cb58-2"><a href="#cb58-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Prix_df,<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           CODE                                             SOURCE     Date
+1 SSSSR3021M0BP Institut National de la Statistique, Base 100=2014 2/1/2000
+2 SSSSR3021M0BP Institut National de la Statistique, Base 100=2014 3/1/2000
+  Prix          PAYS        COMMODITE
+1    0 GUINEE BISSAU 01--Alimentation
+2    0 GUINEE BISSAU 01--Alimentation</code></pre>
+</div>
+</div>
+<ul>
+<li><p><code>anti_join()</code> La fonction <code>anti_join()</code> de retenir uniquement les observations de A qui ne sont pas dans B.</p></li>
+<li><p>Remodeler les données : <code>gather()</code> et <code>spread()</code></p></li>
+</ul>
+<p><code>spread()</code> permet de créer de variables à partir d’une colonne clé et d’une colonne valeur.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a>Produits_Agg<span class="ot">&lt;-</span>Produits<span class="sc">|&gt;</span></span>
+<span id="cb60-2"><a href="#cb60-2" aria-hidden="true" tabindex="-1"></a>              <span class="fu">group_by</span>(Annee, Pays)<span class="sc">|&gt;</span></span>
+<span id="cb60-3"><a href="#cb60-3" aria-hidden="true" tabindex="-1"></a>              <span class="fu">summarise</span>(<span class="at">Valeur=</span><span class="fu">sum</span>(Valeur), <span class="at">.groups=</span><span class="st">"drop"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>(Produits_court<span class="ot">&lt;-</span>Produits_Agg<span class="sc">|&gt;</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>          <span class="fu">spread</span>(<span class="at">key=</span>Pays, <span class="at">value=</span>Valeur))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 28 × 9
+   Annee  Cameroun    Canada  Chine `Côte d'ivoire`   Inde Mexique   Togo    USA
+   &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;           &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+ 1  1996 10766168. 14105510. 1.19e7       21234381. 1.42e7  1.15e7 9.15e6 1.37e7
+ 2  1997 14662885. 11541927. 1.40e7       15793027. 1.71e7  1.54e7 7.24e6 1.39e7
+ 3  1998  9382640. 14095486. 1.71e7       17538154. 1.51e7  8.40e6 1.12e7 1.10e7
+ 4  1999 11691493. 13602121. 1.23e7       16060310. 1.06e7  1.43e7 1.08e7 1.56e7
+ 5  2000 12700349. 13877628. 1.95e7       10826477. 1.16e7  1.57e7 8.95e6 1.52e7
+ 6  2001 12797004. 14488223. 1.31e7       16095095. 1.12e7  1.62e7 1.07e7 9.01e6
+ 7  2002 11880047. 15181935. 1.44e7       16124581. 1.39e7  1.43e7 1.56e7 1.31e7
+ 8  2003 12477949.  9706718. 1.21e7       15775635. 1.13e7  1.72e7 1.21e7 1.66e7
+ 9  2004  8925461. 13422328. 1.21e7       11366224. 1.53e7  1.38e7 1.49e7 1.81e7
+10  2005 11814168. 10761638. 1.52e7       12845589. 1.03e7  1.39e7 2.06e7 1.28e7
+# ℹ 18 more rows</code></pre>
+</div>
+</div>
+<p><code>gather()</code> prend plusieurs colonnes et le transforme en deux colonnes de clé-valeur</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>(Products_long<span class="ot">&lt;-</span>Produits_court<span class="sc">|&gt;</span><span class="fu">gather</span>(<span class="at">key=</span><span class="st">"Pays"</span>, </span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>                                              <span class="at">value=</span><span class="st">"valeur"</span>,</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a>                                              <span class="sc">-</span>Annee))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 224 × 3
+   Annee Pays        valeur
+   &lt;dbl&gt; &lt;chr&gt;        &lt;dbl&gt;
+ 1  1996 Cameroun 10766168.
+ 2  1997 Cameroun 14662885.
+ 3  1998 Cameroun  9382640.
+ 4  1999 Cameroun 11691493.
+ 5  2000 Cameroun 12700349.
+ 6  2001 Cameroun 12797004.
+ 7  2002 Cameroun 11880047.
+ 8  2003 Cameroun 12477949.
+ 9  2004 Cameroun  8925461.
+10  2005 Cameroun 11814168.
+# ℹ 214 more rows</code></pre>
+</div>
+</div>
+</section>
+<section id="lutilisation-de-pivot_longer-et-de-pivot_wider" class="level3">
+<h3 class="anchored" data-anchor-id="lutilisation-de-pivot_longer-et-de-pivot_wider">L’utilisation de <code>pivot_longer()</code> et de <code>pivot_wider()</code></h3>
+<p><code>pivot_longer()</code> et <code>pivot_wider()</code> fonctionnent exactement comme <code>gather</code> et <code>spread()</code></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>(Products_Pays_long<span class="ot">&lt;-</span>Produits_court<span class="sc">|&gt;</span><span class="fu">pivot_longer</span>(<span class="sc">!</span>Annee, <span class="at">names_to=</span><span class="st">"Pays"</span>, <span class="at">values_to=</span><span class="st">"Valeur"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 224 × 3
+   Annee Pays             Valeur
+   &lt;dbl&gt; &lt;chr&gt;             &lt;dbl&gt;
+ 1  1996 Cameroun      10766168.
+ 2  1996 Canada        14105510.
+ 3  1996 Chine         11856274.
+ 4  1996 Côte d'ivoire 21234381.
+ 5  1996 Inde          14152636.
+ 6  1996 Mexique       11506933.
+ 7  1996 Togo           9145886.
+ 8  1996 USA           13740810.
+ 9  1997 Cameroun      14662885.
+10  1997 Canada        11541927.
+# ℹ 214 more rows</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>(Products_Pays_wide<span class="ot">&lt;-</span>Products_Pays_long<span class="sc">|&gt;</span><span class="fu">pivot_wider</span>(<span class="at">names_from=</span>Pays, <span class="at">values_from=</span>Valeur))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 28 × 9
+   Annee  Cameroun    Canada  Chine `Côte d'ivoire`   Inde Mexique   Togo    USA
+   &lt;dbl&gt;     &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;           &lt;dbl&gt;  &lt;dbl&gt;   &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt;
+ 1  1996 10766168. 14105510. 1.19e7       21234381. 1.42e7  1.15e7 9.15e6 1.37e7
+ 2  1997 14662885. 11541927. 1.40e7       15793027. 1.71e7  1.54e7 7.24e6 1.39e7
+ 3  1998  9382640. 14095486. 1.71e7       17538154. 1.51e7  8.40e6 1.12e7 1.10e7
+ 4  1999 11691493. 13602121. 1.23e7       16060310. 1.06e7  1.43e7 1.08e7 1.56e7
+ 5  2000 12700349. 13877628. 1.95e7       10826477. 1.16e7  1.57e7 8.95e6 1.52e7
+ 6  2001 12797004. 14488223. 1.31e7       16095095. 1.12e7  1.62e7 1.07e7 9.01e6
+ 7  2002 11880047. 15181935. 1.44e7       16124581. 1.39e7  1.43e7 1.56e7 1.31e7
+ 8  2003 12477949.  9706718. 1.21e7       15775635. 1.13e7  1.72e7 1.21e7 1.66e7
+ 9  2004  8925461. 13422328. 1.21e7       11366224. 1.53e7  1.38e7 1.49e7 1.81e7
+10  2005 11814168. 10761638. 1.52e7       12845589. 1.03e7  1.39e7 2.06e7 1.28e7
+# ℹ 18 more rows</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="manipulation-des-chaines-de-caractères" class="level2">
+<h2 class="anchored" data-anchor-id="manipulation-des-chaines-de-caractères">Manipulation des chaines de caractères</h2>
+<section id="manipulation-des-chaines-de-caractères-1" class="level3">
+<h3 class="anchored" data-anchor-id="manipulation-des-chaines-de-caractères-1">Manipulation des chaines de caractères</h3>
+<p>Dans cette section nous aborderons les fonctions suivantes: - <code>grep()</code> et <code>grepl()</code>: La fonction grep() recherche les correspondances d’une expression régulière dans un vecteur de chaines de caractères. Elle retourne l’indice du caractère dans le vecteur.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="st">"R"</span>,<span class="st">"est"</span>,<span class="st">"l'outil"</span>,<span class="st">"des"</span>,<span class="st">"scientiques"</span>,<span class="st">"des données"</span>)</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a><span class="fu">grep</span>(<span class="st">"[t-z]"</span>,x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2 3 5</code></pre>
+</div>
+</div>
+<p>La fonction <code>grepl()</code> est similaire à <code>grep()</code> mais retourne des vecteurs logiques.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a><span class="fu">grepl</span>(<span class="st">"[t-z]"</span>,x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] FALSE  TRUE  TRUE FALSE  TRUE FALSE</code></pre>
+</div>
+</div>
+<ul>
+<li><code>regexpr()</code> et <code>gregexpr()</code></li>
+</ul>
+<p>La fonction <code>regexpr()</code> recherche une chaine de caractères dans un text et retourne un vecteur comprenant renseignant la longueur de la chaine contenant l’élément recherché. Si la chaine n’est pas trouvée, elle retourne -1.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">regexpr</span>(<span class="st">"es"</span>, x)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -1  1 -1  2 10  2
+attr(,"match.length")
+[1] -1  2 -1  2  2  2</code></pre>
+</div>
+</div>
+<p>La fonction <code>gregexpr()</code> retourne une liste comprenant renseignant la longueur de la chaine contenant l’élément recherché. Si la chaine n’est pas trouvée, elle retourne -1.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">gregexpr</span>(<span class="st">"es"</span>, x)[[<span class="dv">1</span>]]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -1
+attr(,"match.length")
+[1] -1</code></pre>
+</div>
+</div>
+<ul>
+<li><code>sub()</code> et <code>gsub()</code> La fonction <code>sub()</code> substitue un caractère ou chaine de caractére par un autre défini par l’utilisateur. Mais s’il y a plusieurs caratères à trouver, elle ne remplace que le premier</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a>date<span class="ot">&lt;-</span><span class="st">"17 12 2023"</span></span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a><span class="fu">sub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">s"</span>, <span class="st">"-"</span>, date)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "17-12 2023"</code></pre>
+</div>
+</div>
+<p>La fonction <code>gsub()</code> par contre remplace tous les caractères à trouver.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>date<span class="ot">&lt;-</span><span class="st">"17 12 2023"</span></span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gsub</span>(<span class="st">"</span><span class="sc">\\</span><span class="st">s"</span>, <span class="st">"-"</span>, date)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "17-12-2023"</code></pre>
+</div>
+</div>
+<ul>
+<li><code>regexec()</code></li>
+</ul>
+<p><code>regexec()</code> renvoie une liste de la même longueur que le texte. Les éléments sont soit -1 si le caractère recherché n’a pas de correspondant ou soit une séquence d’entiers avec la positions de départ du caractère retrouvé et toutes les sous-chaînes correspondant aux sous-expressions entre parenthèses.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a>x<span class="ot">&lt;-</span><span class="st">"https://regex101.com/"</span></span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>r<span class="ot">&lt;-</span><span class="fu">regexec</span>(<span class="st">"(([^:]+)://)?([^:/]+)"</span>,x )</span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a>r</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[[1]]
+[1] 1 1 1 9
+attr(,"match.length")
+[1] 20  8  5 12
+attr(,"index.type")
+[1] "chars"
+attr(,"useBytes")
+[1] TRUE</code></pre>
+</div>
+</div>
+</section>
+<section id="expressions-régulières" class="level3">
+<h3 class="anchored" data-anchor-id="expressions-régulières">Expressions régulières</h3>
+<p>Je vous invite à consulter de temps en temps le site <a href="https://regex101.com/">regex</a> si vous êtes bloqués.</p>
+<section id="utilisation-de-lextraction-par-groupe-avec-les-fonctions-str_match-et-str_extract" class="level4">
+<h4 class="anchored" data-anchor-id="utilisation-de-lextraction-par-groupe-avec-les-fonctions-str_match-et-str_extract">Utilisation de l’extraction par groupe avec les fonctions <code>str_match</code> et <code>str_extract</code></h4>
+</section>
+</section>
+<section id="exemple" class="level3">
+<h3 class="anchored" data-anchor-id="exemple">Exemple</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a>strings <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">" 219 733 8965"</span>, <span class="st">"329-293-8753 "</span>, <span class="st">"banana"</span>, <span class="st">"595 794 7569"</span>,</span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>  <span class="st">"387 287 6718"</span>, <span class="st">"apple"</span>, <span class="st">"233.398.9187  "</span>, <span class="st">"482 952 3315"</span>,</span>
+<span id="cb83-3"><a href="#cb83-3" aria-hidden="true" tabindex="-1"></a>  <span class="st">"239 923 8115 and 842 566 4692"</span>, <span class="st">"Work: 579-499-7527"</span>, <span class="st">"$1000"</span>,</span>
+<span id="cb83-4"><a href="#cb83-4" aria-hidden="true" tabindex="-1"></a>  <span class="st">"Home: 543.355.3679"</span>)</span>
+<span id="cb83-5"><a href="#cb83-5" aria-hidden="true" tabindex="-1"></a>phone <span class="ot">&lt;-</span> <span class="st">"(</span><span class="sc">\\</span><span class="st">d{3})[- .](</span><span class="sc">\\</span><span class="st">d{3})[- .](</span><span class="sc">\\</span><span class="st">d{4})"</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="str_match" class="level3">
+<h3 class="anchored" data-anchor-id="str_match"><code>str_match</code></h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_match</span>(strings, phone)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      [,1]           [,2]  [,3]  [,4]  
+ [1,] "219 733 8965" "219" "733" "8965"
+ [2,] "329-293-8753" "329" "293" "8753"
+ [3,] NA             NA    NA    NA    
+ [4,] "595 794 7569" "595" "794" "7569"
+ [5,] "387 287 6718" "387" "287" "6718"
+ [6,] NA             NA    NA    NA    
+ [7,] "233.398.9187" "233" "398" "9187"
+ [8,] "482 952 3315" "482" "952" "3315"
+ [9,] "239 923 8115" "239" "923" "8115"
+[10,] "579-499-7527" "579" "499" "7527"
+[11,] NA             NA    NA    NA    
+[12,] "543.355.3679" "543" "355" "3679"</code></pre>
+</div>
+</div>
+</section>
+<section id="str_extract" class="level3">
+<h3 class="anchored" data-anchor-id="str_extract"><code>str_extract</code></h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str_extract</span>(strings, phone)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "219 733 8965" "329-293-8753" NA             "595 794 7569" "387 287 6718"
+ [6] NA             "233.398.9187" "482 952 3315" "239 923 8115" "579-499-7527"
+[11] NA             "543.355.3679"</code></pre>
+</div>
+</div>
+</section>
+<section id="match-en-groupe" class="level3">
+<h3 class="anchored" data-anchor-id="match-en-groupe">Match en groupe</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a>phone<span class="ot">&lt;-</span><span class="st">"(?&lt;zone&gt;</span><span class="sc">\\</span><span class="st">d{3})[- .](?&lt;phone&gt;</span><span class="sc">\\</span><span class="st">d{3}[- .]</span><span class="sc">\\</span><span class="st">d{4})"</span></span>
+<span id="cb88-2"><a href="#cb88-2" aria-hidden="true" tabindex="-1"></a><span class="fu">str_match</span>(strings, phone)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                     zone  phone     
+ [1,] "219 733 8965" "219" "733 8965"
+ [2,] "329-293-8753" "329" "293-8753"
+ [3,] NA             NA    NA        
+ [4,] "595 794 7569" "595" "794 7569"
+ [5,] "387 287 6718" "387" "287 6718"
+ [6,] NA             NA    NA        
+ [7,] "233.398.9187" "233" "398.9187"
+ [8,] "482 952 3315" "482" "952 3315"
+ [9,] "239 923 8115" "239" "923 8115"
+[10,] "579-499-7527" "579" "499-7527"
+[11,] NA             NA    NA        
+[12,] "543.355.3679" "543" "355.3679"</code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Exercice
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Nous allons dans cet exercice manipuler les données l’immigration Canada relative aux résidents permanents. Travail à faire: - Importer ce fichier suivant “https://www.ircc.canada.ca/opendata-donneesouvertes/data/EN_ODP-PR-ProvImmCat.xlsx”</p>
+<ol type="1">
+<li><p>Qu’est ce que vous remarquez?</p></li>
+<li><p>Utiliser la fonction <code>str_remove_all()</code> pour enlever cette chaine de caractère ‘xml:space=“preserve”&gt;’</p></li>
+<li><p>Utiliser la fonction <code>select()</code> avec <code>where()</code> pour retenir les colonnes pertinentes - Utiliser la fonction <code>mutate()</code> pour créer une ligne de contenant les dates.</p></li>
+<li><p>Definir la lignes des dates comme variables</p></li>
+<li><p>Utiliser la fonction <code>mutate()</code> pour imputer les variables manquantes.</p></li>
+</ol>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+</div> <!-- /content -->
+
+
+
+</body></html>
