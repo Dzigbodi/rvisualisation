@@ -1,0 +1,5 @@
+---
+title: "A propos"
+---
+
+Ce cours a pour but de fournir à l'apprenant des outils nécessaires pour maitriser la manipulation des données dans R et réaliser un tableau de bord intuitif.

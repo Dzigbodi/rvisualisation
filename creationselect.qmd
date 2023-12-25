@@ -1,0 +1,468 @@
+---
+title: "Creation, fusion et manipulation"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Cette section introduit la manipulation des données dans `R`.
+
+```{r, include=FALSE, echo=FALSE}
+library(openxlsx)
+Prix<-read.table("./data/Prix.txt", sep="\t", header = TRUE)
+dictionnaire<-read.delim("./data/Dictionnaire.txt", sep = "\t", header = TRUE)
+PR<-read.xlsx(xlsxFile = "./data/Immigration.xlsx", sheet = "Immigration")
+```
+
+
+## Manipulation des données avec dplyr
+
+### Création d'objet `tibble()`
+
+`tibble()` est une table de données équivalent à `data.frame`. Il fait partie de la libraire `dplyr`.
+
+```{r, message=FALSE}
+library(tidyverse)
+set.seed(100)
+n<-10000
+Produits<-tibble(Date=seq.Date(from=as.Date("1996/01/01"), by="day", length=n), Categories=sample(LETTERS,n, replace=T), Pays=sample(c("Chine","Inde","USA","Canada","Togo","Cameroun","Côte d'ivoire", "Mexique"), n, replace=T),Prix=runif(n,min = 20, max=100 ),
+                 Quantite=runif(n, min=5, max=10000))
+head(Produits,2)
+```
+
+La fonction `seq.Date()` permet de créer les séquences de date.
+
+### Création ou transformation de variables: `mutate()`
+
+La function `mutate()` permet de créer une variable ou de transformer une variable existante. Pour attacher les données à une fonction, on sert de l'instruction `%>%` ou `|>`. C'est comme si on écrivait: $f(x,y)$, $x$ étant le `tibble` ou le `data.frame` passé en argument. Utilisons la table de données `Produits` pour créer la valeur des produits
+
+```{r}
+Produits<-Produits|>
+          mutate(Valeur=Prix*Quantite)
+head(Produits,2)
+```
+
+### Créer ou manipuler plusieurs variables à la fois: `across()`
+
+La fonction `mutate()` combiner avec `across()` permet de manipuler plusieurs variables à la fois.
+
+```{r}
+Produits<-Produits|>
+         mutate(across(c(Prix, Quantite), \(x) round(x, 0)))
+head(Produits,2)
+```
+
+-   Avec le package `lubridate` nous pouvons extraire les années: `year()`, les mois: `month()`, les trimestres: `quarter()`
+
+```{r}
+Produits<-Produits|>
+          mutate(Annee=year(Date),
+                 Mois=month(Date),
+                 Trimestre=quarter(Date))
+```
+
+### Renommer une variable: `rename()`
+
+Pour renommer une variable on utilise la fonction `rename(nouvelle_variable=ancienne_variable)`
+
+```{r}
+head(Produits_renom<-Produits|>rename(`Pays de provenance`=Pays),3)
+
+```
+
+### Reordonner les variables: `relocate()`
+
+La fonction `relocate` permet de réordornner les variables dans une table.
+
+```{r}
+Produits_relo<-Produits|>relocate(Date, Annee,Trimestre, Mois, Pays,Categories)
+head(Produits_relo,3)
+```
+
+### Selectionner les variables: `select()`
+
+La fonction `select()` permet de selectionner les variables
+
+```{r}
+Produits_valeur<-Produits|>select(Date, Pays,Categories,Valeur)
+head(Produits_valeur,3)
+```
+
+On peut exclure les variables en utilisant la négation `!` ou `-`.
+
+```{r}
+Produits_valeur<-Produits|>select(-c(Prix,Quantite))
+head(Produits_valeur,3)
+```
+
+### Autres fonctions applicables à la sélection
+
+Les fonctions `contains()` , `ends_with()`, `starts_with()`, `num_range(prefic, ordre)`, `all_of()` et `any_of()`.
+
+```{r}
+head(Produits_cont<-Produits|>select(contains("p")),5)
+```
+
+### Recodification des variables: `recode()` et `case_when()`, `case_match`
+
+Nous pouvons créer une variable par recodification en utilisant `case_when()`.
+
+```{r}
+Produits<-Produits|>mutate(Continent=case_when(
+  Pays%in% c("Chine","Inde")~ "Asie",
+  Pays%in%c("USA","Canada","Mexique")~"Amerique",
+  Pays%in%c("Togo","Cameroun","Côte d'ivoire")~"Afrique"
+))
+head(Produits,3)
+```
+
+L'utilisation de `case_match()`
+
+```{r}
+Produits<-Produits|>mutate(Continent=case_match(
+  Pays,
+   c("Chine","Inde")~ "Asie",
+ c("USA","Canada","Mexique")~"Amerique",
+  c("Togo","Cameroun","Côte d'ivoire")~"Afrique"
+))
+head(Produits,3)
+```
+
+On peut aussi utiliser `recode()`
+
+```{r}
+Produits<-Produits|>mutate(Continent=recode(
+  Pays,
+"Chine"= "Asie",
+"Inde"="Asie",
+"USA"="Amerique",
+"Canada"="Amerique",
+"Togo"="Afrique",
+"Cameroun"="Afrique",
+"Côte d'Ivoire"="Afrique"
+))
+head(Produits,3)
+```
+
+::: callout-tip
+## Exercice
+
+-   Recoder la variable `Categories` en `Classe_Categories` suivant la regroupement ci-après:
+    -   A-G: 1
+    -   H-P: 2
+    -   Q-T: 3
+    -   U-Z: 4
+-   Transformer cette variable en format `factor` dont les libellés sont: "Bas de gamme", "Moyen de gamme", "Haut de gamme" ,"Prémium"
+:::
+
+### Manipulation des observations: `filter()` and `slice()`
+
+La fonction `filter()` permet de filtrer les observations selon des critères données.
+
+```{r}
+Produits_Cat<-Produits|>filter(Categories%in%c("A","B","F"))
+head(Produits_Cat,5)
+```
+
+```{r}
+Produits_min<-Produits|>filter(Prix==min(Prix))
+head(Produits_min,5)
+```
+
+La fonction `slice()` permet de sélectionner les lignes d'observations en précisant les numéros de lignes.
+
+```{r}
+(Cinq_premieres_obs<-Produits|>slice(1:5))
+
+```
+
+La fonction `slice_sample()` permet de sélectionner aléatoirement les lignes d'observations. La synthaxe `slice_sample(.data,...,n,prop,weight_by, replace=FALSE)`
+
+```{r}
+(Produits_sample<-Produits|>slice_sample(n=10, replace=F))
+```
+
+Nous pouvons faire une selection aléatoire proportionnelle selon une variable de taille
+
+```{r}
+(Produits_poids<-Produits|>slice_sample(n=10, weight_by = Valeur))
+```
+
+La fonction `distinct()` permet d'éliminer les doublons dans la table des données.
+
+```{r}
+Produits_Cat_Pays<-Produits|>distinct(Categories, Pays)
+head(Produits_Cat_Pays)
+```
+
+### Grouper et ordonner les observations
+
+La fonction `group_by()` permet de grouper les observations selon une liste de variables
+
+```{r}
+Produits_Pays<-Produits|>group_by(Pays)|>slice(1:2)
+head(Produits_Pays)
+```
+
+::: callout-tip
+## Exercice
+
+Utiliser la fonction `slice_min()` et `slice_max()`, avec pour critère la variable Valeur dans chaque catégorie
+:::
+
+La fonction `arrange()` permet d'ordonner les observations selon une variable ou une liste de variable. Lorsqu'on l'utilise avec la `group_by()` on spécifie si le tri se fera par groupe en utilisant `.by_group=TRUE`
+
+```{r}
+Produits_ord<-Produits|>group_by(Pays,Categories)|>
+                       arrange(Valeur, .by_group = TRUE)
+head(Produits_ord)
+```
+
+Pour préciser l'ordre décroissante on utilise la fonction `desc()`.
+
+```{r}
+Produits_ord<-Produits|>group_by(Pays,Categories)|>
+                       arrange(desc(Valeur), .by_group = TRUE)
+head(Produits_ord)
+```
+
+### Descriptions des variables: `summarise()`
+
+La fonction `summarise()` est appliquée aux colonnes pour créer une nouvelle table. Dans ce cas on peut utiliser les fonctions comme:
+
+-   Fonction de comptage
+    -   `n()`: nombre de valeurs ou de lignes
+    -   `n_distinct()`: nombre unique
+    -   `sum(!is.na())`: nombre de valeurs non manquantes
+-   Fonction de positions
+    -   `mean()`: moyenne
+    -   `median()`
+-   Fonction de rang
+    -   `quantile()`: Nombre de quantile
+    -   `min()`: valeur minimum
+    -   `max()`: valeur maximum
+-   Fonction de dispersion
+    -   `IQR()`: interval inter-quartile
+    -   `mad()`: Ecart médian absolu
+    -   `sd()` : standard deviation
+    -   `var()`: variance
+
+Par ailleurs, l'utilisateur peut écrire sa fonction et la passer dans la fonction `summarise()`.
+
+```{r}
+Produits|>summarise(Valeur_Min=min(Valeur))
+```
+
+La fonction summarise peut être combinée aussi avec la fonction `group_by()`.
+
+```{r}
+Produits|>group_by(Pays)|>summarise(Valeur_Max=max(Valeur))
+```
+
+Utiliser la fonction `across()` pour une application sur plusieurs variables
+
+```{r}
+Produits|>group_by(Annee,Pays)|>summarise(across(c(Prix, Quantite, Valeur),\(x)min(x)), .groups = "drop")
+```
+
+Utiliser la fonction `across()` avec une liste de fonctions
+
+```{r}
+Produits|>group_by(Annee,Pays)|>summarise(across(c(Prix, Quantite, Valeur),list(min=min, max=max, mean=mean)),.groups = "drop")
+```
+
+## Combinaison des tables de données
+
+Dans cette section, nous aborderons la fusion des tables et l'ajout des observations à une table.
+
+### Ajout d'observation de deux tables de données
+
+Pour ajouter deux tables données, il faudra que les deux tables aient le même nombre de colonnes. On utilise pour cela la fonction `bind_rows()`
+
+```{r}
+Produits1<-Produits|>filter(Continent=="Asie")
+Produits2<-Produits|>filter(Continent!="Asie")
+
+Produits_Rows<-Produits1|>bind_rows(Produits2)
+
+head(Produits_Rows)
+```
+
+### Ajout de variables
+
+L'ajout de variables peut se faire par la fonction `bind_cols()` ou par fusion. Dans le cas de l'utilisation de la variable `bind_cols()`, il faut s'assurer que les lignes soient correspondantes.
+
+Nous nous concentrons sur la fusion de données car c'est le cas le plus intéressant.
+
+-   `inner_join()` C'est une fonction qui permet de fusionner les élements communs de deux tables selon une clé de fusion.
+
+```{r}
+Prix_df<-Prix|>inner_join(dictionnaire, by=c("CODE"="SERIE"))
+head(Prix_df,2)
+```
+
+-   `left_join()` Soit deux tables A et B ayant une clé commune. Si on veut ramèner les observations qui de A qui sont dans B, on utilisera la fonction `left_join()` selon la clée
+
+```{r}
+Prix_df<-Prix|>left_join(dictionnaire, by=c("CODE"="SERIE"))
+head(Prix_df,2)
+```
+
+-   `right_join()` C'est une fonction similaire à `left_join()`, mais danse que ramène les observations de B qui sont dans A.
+
+```{r}
+Prix_df<-Prix|>right_join(dictionnaire, by=c("CODE"="SERIE"))
+head(Prix_df,2)
+```
+
+-   `full_join()` La fonction `full_join()` de retenir toutes les observations des deux tables.
+
+```{r}
+Prix_df<-Prix|>full_join(dictionnaire, by=c("CODE"="SERIE"))
+head(Prix_df,2)
+```
+
+-   `anti_join()` La fonction `anti_join()` de retenir uniquement les observations de A qui ne sont pas dans B.
+
+-   Remodeler les données : `gather()` et `spread()`
+
+`spread()` permet de créer de variables à partir d'une colonne clé et d'une colonne valeur.
+
+```{r}
+
+Produits_Agg<-Produits|>
+              group_by(Annee, Pays)|>
+              summarise(Valeur=sum(Valeur), .groups="drop")
+```
+
+```{r}
+(Produits_court<-Produits_Agg|>
+          spread(key=Pays, value=Valeur))
+```
+
+`gather()` prend plusieurs colonnes et le transforme en deux colonnes de clé-valeur
+
+```{r}
+(Products_long<-Produits_court|>gather(key="Pays", 
+                                              value="valeur",
+                                              -Annee))
+```
+
+### L'utilisation de `pivot_longer()` et de `pivot_wider()`
+
+`pivot_longer()` et `pivot_wider()` fonctionnent exactement comme `gather` et `spread()`
+
+```{r}
+(Products_Pays_long<-Produits_court|>pivot_longer(!Annee, names_to="Pays", values_to="Valeur"))
+```
+
+```{r}
+(Products_Pays_wide<-Products_Pays_long|>pivot_wider(names_from=Pays, values_from=Valeur))
+```
+
+## Manipulation des chaines de caractères
+
+### Manipulation des chaines de caractères
+
+Dans cette section nous aborderons les fonctions suivantes: - `grep()` et `grepl()`: La fonction grep() recherche les correspondances d'une expression régulière dans un vecteur de chaines de caractères. Elle retourne l'indice du caractère dans le vecteur.
+
+```{r}
+x<-c("R","est","l'outil","des","scientiques","des données")
+grep("[t-z]",x)
+```
+
+La fonction `grepl()` est similaire à `grep()` mais retourne des vecteurs logiques.
+
+```{r}
+grepl("[t-z]",x)
+```
+
+-   `regexpr()` et `gregexpr()`
+
+La fonction `regexpr()` recherche une chaine de caractères dans un text et retourne un vecteur comprenant renseignant la longueur de la chaine contenant l'élément recherché. Si la chaine n'est pas trouvée, elle retourne -1.
+
+```{r}
+regexpr("es", x)
+```
+
+La fonction `gregexpr()` retourne une liste comprenant renseignant la longueur de la chaine contenant l'élément recherché. Si la chaine n'est pas trouvée, elle retourne -1.
+
+```{r}
+gregexpr("es", x)[[1]]
+```
+
+-   `sub()` et `gsub()` La fonction `sub()` substitue un caractère ou chaine de caractére par un autre défini par l'utilisateur. Mais s'il y a plusieurs caratères à trouver, elle ne remplace que le premier
+
+```{r}
+date<-"17 12 2023"
+sub("\\s", "-", date)
+```
+
+La fonction `gsub()` par contre remplace tous les caractères à trouver.
+
+```{r}
+date<-"17 12 2023"
+gsub("\\s", "-", date)
+```
+
+-   `regexec()`
+
+`regexec()` renvoie une liste de la même longueur que le texte. Les éléments sont soit -1 si le caractère recherché n'a pas de correspondant ou soit une séquence d'entiers avec la positions de départ du caractère retrouvé et toutes les sous-chaînes correspondant aux sous-expressions entre parenthèses.
+
+```{r}
+x<-"https://regex101.com/"
+r<-regexec("(([^:]+)://)?([^:/]+)",x )
+r
+```
+
+### Expressions régulières
+
+Je vous invite à consulter de temps en temps le site [regex](https://regex101.com/) si vous êtes bloqués.
+
+#### Utilisation de l'extraction par groupe avec les fonctions `str_match` et `str_extract`
+
+### Exemple
+
+```{r}
+strings <- c(" 219 733 8965", "329-293-8753 ", "banana", "595 794 7569",
+  "387 287 6718", "apple", "233.398.9187  ", "482 952 3315",
+  "239 923 8115 and 842 566 4692", "Work: 579-499-7527", "$1000",
+  "Home: 543.355.3679")
+phone <- "(\\d{3})[- .](\\d{3})[- .](\\d{4})"
+```
+
+### `str_match`
+
+```{r}
+str_match(strings, phone)
+```
+
+### `str_extract`
+
+```{r}
+str_extract(strings, phone)
+```
+
+### Match en groupe
+
+```{r}
+phone<-"(?<zone>\\d{3})[- .](?<phone>\\d{3}[- .]\\d{4})"
+str_match(strings, phone)
+```
+
+::: callout-tip
+## Exercice
+
+Nous allons dans cet exercice manipuler les données l'immigration Canada relative aux résidents permanents. Travail à faire: - Importer ce fichier suivant "https://www.ircc.canada.ca/opendata-donneesouvertes/data/EN_ODP-PR-ProvImmCat.xlsx"
+
+1.  Qu'est ce que vous remarquez?
+
+2.  Utiliser la fonction `str_remove_all()` pour enlever cette chaine de caractère 'xml:space="preserve"\>'
+
+3.  Utiliser la fonction `select()` avec `where()` pour retenir les colonnes pertinentes - Utiliser la fonction `mutate()` pour créer une ligne de contenant les dates.
+
+4.  Definir la lignes des dates comme variables
+
+5.  Utiliser la fonction `mutate()` pour imputer les variables manquantes.
+:::

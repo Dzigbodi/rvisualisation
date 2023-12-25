@@ -1,0 +1,32 @@
+project: 
+  type: website
+  output-dir: docs
+
+website: 
+  sidebar:
+    - title: "Tableau de Bord sur R"
+      style: "docked"
+      search: true
+      background: light
+      contents: 
+        - href: index.qmd
+        - section: "Base de R"
+          contents: 
+            - href: Intro.qmd
+            - href: logical.qmd
+        - section: "Manipulation"
+          contents:
+          - href: import.qmd
+          - href: creationselect.qmd
+          - href: stringmanip.qmd
+          - href: dplyrexercice.qmd
+        - section: "Visualisation"
+          contents: 
+          - href: vizggplot.qmd
+          - href: exoggplot.qmd
+          
+format:
+ html: 
+  theme: cosmo
+  css: styles.css
+  toc: true

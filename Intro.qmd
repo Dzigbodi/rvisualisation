@@ -1,0 +1,327 @@
+---
+title: "Rappel sur les Objets de R"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Dans ce module, nous allons parcourir les fondamentaux avec R à savoir: -Les notions de base dans R: operation, vecteur, dataframe, list. -Les fonctions prédéfinies dans la librairie de base R; -Introduction à la programmation dans R: structures conditionnelles, et les itérations, `if`, `for`, `while`, `repeat` - L'importation des fichiers de différents types: `txt`, `xlsx`, `csv`. - L'écriture des fichiers, en format `rdata`, `rds`, `txt`, `xlsx`, `csv`.
+
+## Installation de R
+
+R est un logiciel libre destiné aux calculs statistiques et graphiques du CRAN: Installer R à partir de [Comprehensive R Archive Network](https://www.r-project.org/).
+
+-   RStudio est un EDI (Environnement Intégré de Développement) adéquat pour R: Installer RStudio à partir du [site posit](https://posit.co/download/rstudio-desktop/).
+
+-   Vous pouvez trouver comme alternatif à l'installation de R, des plateformes en ligne, parmi lesquels se trouvent:
+
+    -   [Posit Cloud](https://posit.cloud/)
+    -   [kaggle](https://www.kaggle.com/)
+    -   [rdrr.io](https://rdrr.io/snippets/)
+
+::: callout-tip
+## TAF:
+
+-   Aller sur <https://posit.co/download/rstudio-desktop/>
+-   Choisir la version compatible avec votre ordinateur
+-   Télécharger `R` et `Rstudio`.
+-   Installer d'abord `R`, puis `Rstudio`
+:::
+
+## Démarrage de Rstudio {#sec-démarrage-de-rstudio style="color: blue;"}
+
+Au démarrage de Rstudio, vous verrez s'afficher la fenêtre ci-après.
+
+![](Rstudio.png)
+
+-   Les fenêtres: `Console`, `Environnemnt`, `Script` et `help` vont s'ouvrir par défaut.
+
+-   Dans la console se comporte comme une calculatrice:
+
+```{r, echo = TRUE}
+    1+1 # addition 
+```
+
+# Les Bases de R
+
+-   L'extension d'un script R est `.R`, et fichier de données R est `.RDATA`
+
+-   Pour avoir de l'aide pour une fonction ou une commande dans `R` : `??` ou encore `help.search()`, par exemple `help.search(sum)`
+
+## Operateurs d'assignition
+
+| Opération d'assignation | Signification                                         |
+|-------------------------|----------------------------------------------|
+| `<-` ou encore (=)      | Opération d'affection                                 |
+| `&`                     | ET                                                    |
+| `|`                     | OU                                                    |
+| `+`, `-`, `*`,`/`       | Addition, soustraction, multiplication, division      |
+| \>=, \<=, !=, ==        | Supérieur ou égal, inférieur ou égal, différent, égal |
+| `$` , `[[]]`            | Sélecteur de colonne dans un `data.frame`             |
+| `#`                     | Commentaire                                           |
+
+Nous pouvons utilser la majeur partie de ces opérations sur les formats suivants: - Numérque (numeric) - Entier (integer) - Complexe - Logique (logic) - caractère (string)
+
+```{r echo=TRUE}
+ecole<-10
+classe_par_ecole<-15
+total_classe<- ecole*classe_par_ecole
+print(total_classe)
+```
+
+```{r}
+(ratio_ecole_classe<-ecole/classe_par_ecole)
+```
+
+::: callout-caution
+## Attention:
+
+Le nom des variables dans R ne peuvent pas contenir les signes. **Elles doivent commencer par les lettres de l'alphabet**
+:::
+
+## Les Statistiques de base dans R
+
+R contient les fonctions pédéfinies, par exemples:
+
+-   `print()`, `cat()`: sont des fonctions d'imprission.
+-   `getwd()`: permet d'obtenir le répertoire de travail
+-   `setwd()`: permet de définir le répertoire de travail
+-   `ls()`: permet d'afficher la liste des objets
+-   `rm()`: permet de supprimer les objets dans l'espace de travail.
+-   `sum()`: somme, `min()`: minimum, `max()`: maximum, `var()`: variance, `sd()`: Ecart type.
+-   `rnorm()`, `runif()`, `sample()`
+-   `sin()`, `cos()`
+-   `summary()`: pour décrire une variable.
+
+::: callout-tip
+## Obtenir de l'aide
+
+En entrant `?` suivi de la **fonction recherchée**, vous pouvez avoir de l'aide sur cette fonction.
+
+Vous pouvez utiliser `library(help="base")` Pour voir la liste des fonctions qui sont prédéfines dans la version de base de `R`.
+:::
+
+Exemple
+
+```{r}
+theta<-0.5*pi*rnorm(100)
+r<-2
+x<-r*cos(theta)
+y<-r*sin(theta)
+
+```
+
+Description de `x`
+
+```{r}
+summary(x)
+```
+
+Description de `y`
+
+```{r}
+summary(y)
+```
+
+Liste des objets dans l'environnement
+
+```{r}
+ls()
+```
+
+## Les Objets de R
+
+Les principaux objets de `R`qui sont manipulables sont:
+
+-   Les vecteurs
+-   Les Matrices
+-   Les listes
+-   Les dataframes
+
+### Les vecteurs
+
+Pour créer un vecteur dans `R`, vous pouvez utiliser la fonction `c()` Par exemple un vecteur numérique
+
+```{r}
+x<-c(1,2,3,8,10)
+print(x)
+```
+
+Un vecteur de caractères
+
+```{r}
+y<-c("Toto","Ecole","Classe","Maison")
+print(y)
+```
+
+Un vecteur logique
+
+```{r}
+z<-c(T, F, T, F,F,T)
+print(z)
+```
+
+On peut convertir un vecteur logique en format numérique: `as.numeric()`
+
+```{r}
+w<-as.numeric(z)
+print(w)
+```
+
+::: callout-caution
+## Attention:
+
+Il n'est pas possible d'associer un format numerique et un format caractère. Tout le contenu prendra le format caractère.
+:::
+
+```{r}
+t<-c("Classe", 1, "Toto", 3,8)
+print(t)
+```
+
+Par contre on peut convertir un vecteur numérique en caractère: `as.character()`.
+
+```{r}
+u<-as.character(x)
+print(u)
+```
+
+### Les matrices
+
+Une matrice dans R se crée avec avec la fonction `matrix()` en précisant le nombre des colonnes et le nombre des lignes, les données.
+
+```{r}
+set.seed(100)
+m<-matrix(rnorm(100), ncol=5, nrow=20)
+head(m, 4)
+```
+
+On peut créer des matrices de caractères
+
+```{r}
+x<-sample(letters, 100, replace=T)
+mc<-matrix(x, ncol=5, nrow=20)
+head(mc, 4)
+```
+
+Pour extraire des élements de la matrice, il suffit de préciser les indices lignes (`i`) et colonnes `j`: `m[i,j]`
+
+```{r}
+m[1,2]
+```
+
+```{r}
+m[1:3, 1:5]
+```
+
+On peut assigner les noms aux lignes et aux colonnes en utilisant `row.names()` et `colnames()`
+
+```{r}
+row.names(m)<-paste("r", 1:nrow(m),sep=".")
+colnames(m)<-paste("c", 1:ncol(m), sep=".")
+m["r.1", "c.1"]
+```
+
+Les fonctions `rbind()` et `cbind()` peuvent aussi servir à créer une matrice. Elles permettent de combiner les vecteurs par ligne (`rbind()`) ou par colonne (`cbind()`).
+
+::: callout-caution
+## Attention:
+
+Pour utiliser les fonctions `rbind()` et `cbind()`. Il faut s'assurer que les vecteurs soient de même dimension.
+:::
+
+```{r}
+v1<-runif(5)
+v2<-rnorm(5)
+(m1<-cbind(v1, v2))
+(m2<-rbind(v1, v2))
+
+```
+
+|                       |                                    |
+|-----------------------|------------------------------------|
+| Opération matricielle | Signification                      |
+| `*`                   | Multiplication élément par élément |
+| `%*%`                 | Multiplication matricielle         |
+| `t()`                 | Transposition de matrice           |
+| `det()`               | déterminant d'une matrice          |
+| `solve()`             | Inverse d'une matrice              |
+
+### Les listes
+
+Les listes sont beaucoup utilisés dans `R`, et sont vraiment pratiques. Pour créer une liste on utilise la fonction `list()`.
+
+```{r}
+y<-list(1,2)
+y
+```
+
+On peut aussi imbriquer les listes
+
+```{r}
+y<-list(1, list(T, list(c(1:4))))
+y
+```
+
+On utilise `[]`, `[[]]` ou `$` pour extraire les élements d'une liste
+
+```{r}
+y[1]; y[[2]][[1]]
+```
+
+### Les Dataframes
+
+L"objet `dataframe` un type de table ayant des colonnes et des lignes. À la différence d'une matrice, un `dataframe` peut contenir à la fois des plusieurs types de données. Pour créer un `dataframe` on utile la fonction `data.frame()` en précisant le nom des variables.
+
+```{r}
+set.seed(100)
+head(Produits<-data.frame(ID=1:100, Categories=sample(LETTERS, 100, replace = T), Pays=sample(c("Chine","Inde","USA","Canada","Togo","Cameroun"), 100, replace=T),Prix=runif(100)*100,Quantite=runif(100, min=1, max=100)),3)
+```
+
+### Quelques Opérations sur un data.frame
+
+-   Selection d'un variable
+
+```{r}
+Produits[["Pays"]]
+```
+
+-   Creation de nouvelle variable
+
+```{r}
+Produits[["Valeur"]]<-Produits[["Prix"]]*Produits[["Quantite"]]
+head(Produits)
+```
+
+```{r}
+row.names(Produits)
+```
+
+```{r}
+colnames(Produits)
+```
+
+-   Renommer une variable
+
+```{r}
+colnames(Produits)[2]<-"Pays de production"
+
+colnames(Produits)
+```
+
+-   `attach()` ou `detach()` La fonction `attach()` appliquée à un `dataframe` permet de rendre visible les variables du `dataframe`
+
+```{r}
+attach(Produits)
+```
+
+```{r}
+summary(Prix); summary(Valeur)
+```
+
+La fonction `detach()` appliquée à un `dataframe` supprime la visibilité des variables.
+
+```{r}
+detach(Produits)
+```

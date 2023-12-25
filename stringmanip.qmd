@@ -1,0 +1,116 @@
+---
+title: "Expression régulière"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+
+## Manipulation des chaines de caractères
+
+Dans cette section nous aborderons les fonctions suivantes: 
+
+- `grep()` et `grepl()`: La fonction grep() recherche les correspondances d'une expression régulière dans un vecteur de chaines de caractères. Elle retourne l'indice du caractère dans le vecteur.
+
+```{r}
+library(stringr)
+x<-c("R","est","l'outil","des","scientiques","des données")
+grep("[t-z]",x)
+```
+
+La fonction `grepl()` est similaire à `grep()` mais retourne des vecteurs logiques.
+
+```{r}
+grepl("[t-z]",x)
+```
+
+-   `regexpr()` et `gregexpr()`
+
+La fonction `regexpr()` recherche une chaine de caractères dans un text et retourne un vecteur comprenant renseignant la longueur de la chaine contenant l'élément recherché. Si la chaine n'est pas trouvée, elle retourne -1.
+
+```{r}
+regexpr("es", x)
+```
+
+La fonction `gregexpr()` retourne une liste comprenant renseignant la longueur de la chaine contenant l'élément recherché. Si la chaine n'est pas trouvée, elle retourne -1.
+
+```{r}
+gregexpr("es", x)[[1]]
+```
+
+-   `sub()` et `gsub()` La fonction `sub()` substitue un caractère ou chaine de caractére par un autre défini par l'utilisateur. Mais s'il y a plusieurs caratères à trouver, elle ne remplace que le premier
+
+```{r}
+date<-"17 12 2023"
+sub("\\s", "-", date)
+```
+
+La fonction `gsub()` par contre remplace tous les caractères à trouver.
+
+```{r}
+date<-"17 12 2023"
+gsub("\\s", "-", date)
+```
+
+-   `regexec()`
+
+`regexec()` renvoie une liste de la même longueur que le texte. Les éléments sont soit -1 si le caractère recherché n'a pas de correspondant ou soit une séquence d'entiers avec la positions de départ du caractère retrouvé et toutes les sous-chaînes correspondant aux sous-expressions entre parenthèses.
+
+```{r}
+x<-"https://regex101.com/"
+r<-regexec("(([^:]+)://)?([^:/]+)",x )
+r
+```
+
+## Expressions régulières
+
+Je vous invite à consulter de temps en temps le site [regex](https://regex101.com/) si vous êtes bloqués.
+
+#### Utilisation de l'extraction par groupe avec les fonctions `str_match` et `str_extract`
+
+### Exemple
+
+```{r}
+strings <- c(" 219 733 8965", "329-293-8753 ", "banana", "595 794 7569",
+  "387 287 6718", "apple", "233.398.9187  ", "482 952 3315",
+  "239 923 8115 and 842 566 4692", "Work: 579-499-7527", "$1000",
+  "Home: 543.355.3679")
+phone <- "(\\d{3})[- .](\\d{3})[- .](\\d{4})"
+```
+
+### `str_match`
+
+```{r}
+str_match(strings, phone)
+```
+
+### `str_extract`
+
+```{r}
+str_extract(strings, phone)
+```
+
+### Match en groupe
+
+```{r}
+phone<-"(?<zone>\\d{3})[- .](?<phone>\\d{3}[- .]\\d{4})"
+str_match(strings, phone)
+```
+
+::: callout-tip
+## Exercice
+
+Nous allons dans cet exercice manipuler les données l'immigration Canada relative aux résidents permanents. Travail à faire: - Importer ce fichier suivant "https://www.ircc.canada.ca/opendata-donneesouvertes/data/EN_ODP-PR-ProvImmCat.xlsx"
+
+1.  Qu'est ce que vous remarquez?
+
+2.  Utiliser la fonction `str_remove_all()` pour enlever cette chaine de caractère 'xml:space="preserve"\>'
+
+3.  Utiliser la fonction `select()` avec `where()` pour retenir les colonnes pertinentes - Utiliser la fonction `mutate()` pour créer une ligne de contenant les dates.
+
+4.  Definir la lignes des dates comme variables
+
+5.  Utiliser la fonction `mutate()` pour imputer les variables manquantes.
+:::

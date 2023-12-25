@@ -1,0 +1,84 @@
+---
+title: "Exercice sur ***dplyr***"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Cet exercice a pour but d'utiliser vos compétences aquises lors du cours sur la manipulation des données avec `dplyr`.
+
+Dans cet exercice nous allons utiliser les données des [Indicateurs du développement dans le monde](https://donnees.banquemondiale.org/indicateur/EN.ATM.CO2E.PC). Les données concernent les Émissions de CO2 (tonnes métriques par habitant).
+
+```{r, message=FALSE}
+library(tidyverse)
+```
+
+1.  Importer [le fichier des émissions de CO2](./data/CO2Emission.csv). Noter bien que le fichier en format `csv`, mais le séparateur est `;`, et le séparateur de décimal est ",".
+
+```{r}
+CO2Emission<-read.csv("./data/CO2Emission.csv", sep=";", dec=",")
+```
+
+2.  Utiliser la fonction `gather()` pour créer une variable contenant les années et une autre contenant les valeurs.
+
+```{r}
+CO2Emission<-CO2Emission|>gather(key="Annee", value = "CO2percapita", -Country_Code)
+```
+
+3.  Que remarquez-vous?
+
+4.  Utiliser la fonction `substr()` pour extraire les années et les convertir en entier.
+
+```{r}
+CO2Emission<-CO2Emission|>mutate(Annee=substr(Annee,2,5),
+                                 Annee=as.integer(Annee))
+```
+
+5.  Enlever les valeur manquante des données
+
+```{r}
+CO2Emission<-CO2Emission|>filter(!is.na(CO2percapita))
+```
+
+6.  a)  Maintenant importer le [ficher des métadonnées](./data/Metadata.csv)
+
+```{r}
+Metadata<-read.csv("./data/Metadata.csv", sep=";", dec=",")
+```
+
+7.  Importer également le [PIB courant percapita](./data/PIBpercapita.csv)
+
+```{r}
+PibCourant<-read.csv("./data/PIBpercapita.csv", sep=";", dec=",")
+```
+
+8.  Répéter les questions 2 et 3
+
+```{r}
+PibCourant<-PibCourant|>gather(key="Annee", value = "Pibpercapita", -Country_Code)
+PibCourant<-PibCourant|>mutate(Annee=substr(Annee,2,5),
+                                 Annee=as.integer(Annee))
+PibCourant<-PibCourant|>filter(!is.na(Pibpercapita))
+```
+
+9.  Fusion des données. Fusionner les trois bases de données conformément aux informations de la métadonnée. Filtrer selon la variable Année supérieure ou égale à 2000.
+
+```{r}
+data_travail<-inner_join(PibCourant,CO2Emission, by=c("Country_Code","Annee"))|>
+               right_join(Metadata, by="Country_Code")|>
+  filter(Annee>=2000)
+  
+```
+
+10. Enlever les variables en anglais
+
+```{r}
+data_travail<-data_travail|>select(!ends_with("_En"))
+```
+
+11. Sauvegarder les données data_travail sous "./data/exercice_dplyr.csv"
+
+```{r}
+write.csv(data_travail,"./data/exercice_dplyr.csv", row.names = F)
+```

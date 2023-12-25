@@ -1,0 +1,156 @@
+---
+title: "Base de la programmation"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+## Instructions conditionnelles
+
+-   Instruction `if`... `else` Cette instruction permet à l'utilisateur d'évaluer une condition. Si la condition est vraie, il y a une action qui s'exécute sinon l'action alternative s'exécute.
+
+Par exemple trouver si un entier naturel est divisible à la fois par 3 et par 5.
+
+```{r}
+x<-15
+
+if(x %%5 ==0 & x%%3 ==0){
+  cat("Divisible par 3 et par 5")
+}else{
+  cat("L'entier n'est ni divisible par 3 ni par 5")
+}
+```
+
+-   Instruction vectorielle `ifelse()` C'est la forme vectorielle de l'instruction `if`...`else`. Elle prend trois arguments: le premier évalue la condtion; le deuxième retourne le résultat si la condition est vraie et le troisième donne le résultat alternatif.
+
+Par exemple trouver les 100 premiers entiers naturels qui sont divisibles à la fois par 3 et par 5.
+
+```{r}
+x<-1:100
+z<-ifelse(x%%3==0 & x%%5==0, 1,0 )
+x[z==1]
+```
+
+-   Instruction conditionnelle `switch` C'est une instruction condition qui retourne les résultats selon le choix effectué. Le premier argument évalue le choix et retourne les résultats suivants ce choix.
+
+```{r}
+set.seed(123)
+x<-rnorm(100)
+type<-"sd"
+z<-switch(type,
+       mean=mean(x),
+       sd=sd(x))
+z
+
+```
+
+## Instruction itérative
+
+-   La boucle `for` Elle permet de réperter une instruction selon un certain nombre de fois. Reprenons notre exemple sur la divisibilité. Mais cette fois ci nous allos utiliser la boucle `for`
+
+```{r}
+x<-1:100
+for( i in x){
+  if( i%%3==0 & i%%5==0) cat(i, " est divisible par 3 et par 5","\n")
+}
+```
+
+-   La boucle `while()`
+
+C'est une instruction iterative qui répete une action tant que la condition d'entrée est vérifiée. Reprenons encore notre exemple de divisibilité, en utilisant la boucle `while()`
+
+```{r}
+i<-1
+while(i<=100){
+  if( i%%3==0 & i%%5==0) cat(i, " est divisible par 3 et par 5","\n")
+  i<-i+1
+}
+```
+
+-   La boucle `repeat` C'est une instruction iterative qui est similiaire à la boucle `while()` à la différence qu'il faut préciser la condition d'arrêt à la fin en utilisant l'instruction `break`. Reprenons notre exemple de divisibilité.
+
+```{r}
+i<-1
+
+repeat{
+   if( i%%3==0 & i%%5==0) cat(i, " est divisible par 3 et par 5","\n")
+   i<-i+1
+   if(i>100) break
+  
+}
+```
+
+::: callout-tip
+## Exercice
+
+Trouver les nombre premiers inférieurs 100.
+:::
+
+```{r}
+i<-1
+n<-100
+repeat{
+  
+  if(i>1 & sum(i%%(2:(i))==0)==1) cat(i, " est un nombre premier", "\n")
+   i<-i+1
+
+  if(i>n) break
+}
+```
+
+## Les fonctions
+
+Les fonctions sont très utiles. Elles permettent de réduire les lignes de code en évitant des actions répétitives. Pour écrire une fonction on utilise l'instruction `function()`. Elle prend en entrée des variables et en sortie un résultat.
+
+Reprenons l'exercice sur le nombre premier. Ecrivons une fonction qui retourne TRUE ou FALSE si le noombre est premier.
+
+```{r}
+est.premier<-function(x){
+  premier<-FALSE
+  if(x>1 & sum(x%%(2:x)==0)==1){
+    premier<-TRUE
+  }
+  return(premier)
+}
+est.premier(1)
+est.premier(7)
+```
+
+Une fonction peut modifier une variable si elle a une portée globale. Dans la majeure des cas, les varaibles ont une portée locale. Pour modifier une variable d'une portée globale dans une fonction on utilise `<<-` dans l'assignation de la variable.
+
+```{r}
+y<-0
+modifier_y<-function(x){
+  y<<-100
+  x<-x+y
+  return(x)
+}
+modifier_y(10)
+```
+
+## Vectoriser une fonction
+
+Il est utile des fois de vectoriser une fonction pour éviter les boucles itératives. Pour vectoriser une fonction on utilise l'instruction `Vectorize()`.
+
+Reprenons notre fonction que nous avons écrire précédement, et vectorisons la. Puis affichons les nombres premiers inférieurs à 100.
+
+```{r}
+x<-1:100
+Est.premier<-Vectorize(function(x){
+  premier<-FALSE
+  if(x>1 & sum(x%%(2:x)==0)==1){
+    premier<-TRUE
+  }
+  return(premier)
+})
+
+x[Est.premier(x)]
+```
+
+::: callout-tip
+## Exercice
+
+Ecrire une fonction permet de vérifier si un nombre est à la fois divisible par 3 et 5. Puis vectoriser cette fonction, et trouver les entiers naturels inférieurs à 100 qui sont divisible par 3 et 5.
+:::

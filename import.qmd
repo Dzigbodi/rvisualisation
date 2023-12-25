@@ -1,0 +1,111 @@
+---
+title: "Lecture des données dans R"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+Dans ce module introduit la lecture des connées dans `R`.
+
+## Importation des données
+
+### Importer un ficher `txt`
+
+Pour importer un fichier `txt` on utilise les fonctions suivantes: - `read.table()` - `read.delimit()` Dans cet exemple, nous allons importer l'indice des prix à la consommation. Noter que le séparateur c'est une tabulation (`sep="\t"`), et la première ligne correspond au nom des variables (`header=TRUE`).
+
+```{r}
+Prix<-read.table("./data/Prix.txt", sep="\t", header = TRUE)
+```
+
+```{r}
+head(Prix,2)
+```
+
+Avec la fonction `read.delim()` nous allons importer les dictionnaire des données
+
+```{r}
+dictionnaire<-read.delim("./data/Dictionnaire.txt", sep = "\t", header = TRUE)
+```
+
+```{r}
+head(dictionnaire,2)
+```
+
+### Importer un ficher `csv`
+
+On uilise la fonction `read.csv()` pour importer les fichiers `csv`. Nous reprenons les mêmes données dans un format `csv`.
+
+```{r}
+Prix<-read.csv("./data/Prix.csv")
+```
+
+```{r}
+head(Prix,2)
+```
+
+### Importer un ficher `xlsx`
+
+Pour importer les fichierx xlsx nous nous servons de la librairie `openxlsx`. Dans cette libraire, la fonction `read.xlsx()` permet l'importation un fichier Excel.
+
+```{r}
+library(openxlsx)
+PR<-read.xlsx(xlsxFile = "./data/Immigration.xlsx", sheet = "Immigration")
+```
+
+```{r}
+head(PR,2)
+```
+
+Nous pouvons également préciser les plages de cellules à importer en utilisant `namedRegion`.
+
+```{r}
+PR<-read.xlsx(xlsxFile = "./data/Immigration.xlsx",  namedRegion= "PR")
+head(PR,2)
+
+```
+
+## Rappel sur les format Date et factors
+
+### Format Date
+
+### Variable catégorielle ou Nominale
+
+-   La fonction `factor()` sert à créer une variable catégorielle
+
+```{r}
+genre<-factor(c("Masculin","Féminin","Masculin","Masculin","Féminin","Féminin","Féminin"))
+genre
+```
+
+-   La fonction `levels()` sert à définir les modalités.
+
+```{r}
+levels(genre) 
+```
+
+-   Pour labelliser une variable catégorielle
+
+```{r}
+genre<-c(1,1,1,2,2,1,2,1)
+genre<-factor(genre, levels=c(1,2), labels=c("Masculin","Féminin"))
+genre
+```
+
+-   La fonction `relevel()` permet de redéfinir le label de référence (très utile pour les modèles logit)
+
+```{r}
+levels(genre)
+genre<-relevel(genre, ref=2)
+levels(genre)
+```
+
+-   La fonction `revalue()` de la librairie `plyr` permet de recoder les labels,
+
+```{r}
+levels(genre)
+genre_r<-plyr:: revalue(genre, c("Masculin"="Homme","Féminin"="Femme"))
+levels(genre_r)
+```
+

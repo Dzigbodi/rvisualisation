@@ -1,0 +1,176 @@
+---
+title: "Exercice Pratique ggplot2"
+output:
+  github_document:
+    toc: true
+    fig_width: 8
+    fig_height: 4
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+0. Lire le fichier sauvegardé lors de l'exercice sur `dplyr`. Dans la suite de cet exercice nous allons utiliser ce fichier.
+
+```{r, warning=FALSE, message=FALSE}
+library(tidyverse)
+```
+
+
+```{r}
+data_travail<-read.csv("./data/exercice_dplyr.csv")
+```
+
+
+1.  Filtrer la dernière année de la table fusionnée
+
+```{r}
+data_travail_Dernier<-data_travail|>
+  filter(Annee==max(Annee))
+```
+
+2.  Tracer l'histogramme des émissions de CO2 et du PIB Courant. Ajouter les titres et modifier les axes des abscisses et des ordornées.
+
+```{r}
+ggplot(data=data_travail_Dernier, aes(Pibpercapita))+
+  geom_histogram(stat="bin", bins = 35)+
+  labs(title="PIB courant par tête",
+       subtitle = paste("Indicateurs du développement dans le monde,", max(data_travail$Annee)),
+       x="PIB per capita",
+       y="Fréquence")+
+  theme_minimal()
+```
+
+```{r}
+ggplot(data=data_travail_Dernier, aes(CO2percapita))+
+  geom_histogram(stat="bin", bins = 35)+
+  labs(title="Émissions de CO2 par tête",
+       subtitle = paste("Indicateurs du développement dans le monde,", max(data_travail$Annee)),
+       x="Émissions de CO2 per capita",
+       y="Fréquence")+
+  theme_minimal()
+```
+
+3.  Tracer les diagrammes en moustache du PIB courant par tête par région économique
+
+```{r}
+ggplot(data=data_travail_Dernier, aes(Income_group_Fr,Pibpercapita, color=Income_group_Fr))+geom_boxplot()+coord_flip()+
+  labs(title="PIB courant par tête",
+        subtitle = paste("Indicateurs du développement dans le monde,", max(data_travail$Annee)),
+       y="",
+       x="",
+       color="")+
+  theme_minimal()
+```
+
+4.  Tracer les diagrammes en moustache du Émissions de CO2 par tête par région économique
+
+```{r}
+ggplot(data=data_travail_Dernier, aes(Income_group_Fr,CO2percapita, color=Income_group_Fr))+geom_boxplot()+coord_flip()+
+  labs(title="Émissions de CO2 par tête",
+        subtitle = paste("Indicateurs du développement dans le monde,", max(data_travail$Annee)),
+       y="",
+       x="",
+       color="")+
+  theme_minimal()
+```
+
+5.  
+
+    a)  Tracer les nuages de points l'émission de CO2 par tête en fonction du PIB par tête, en identifiant les groupes de revenu
+
+```{r, warning=FALSE}
+ggplot(data=data_travail_Dernier, aes(x=Pibpercapita, y=CO2percapita, color=Income_group_Fr))+
+  geom_point()+
+  labs(title="Émissions de CO2 par tête en fonction du PIB par tête",
+        subtitle = paste("Indicateurs du développement dans le monde,", max(data_travail$Annee)),
+       y="Émissions de CO2 per capita",
+       x="PIB per capita",
+       color="Groupe de revenu"
+       )+
+  theme_light()
+```
+
+5.  
+
+    b)  Ajouter un droite de regression sur les nuages de points: `formula = 'y ~ x', se=T, color="red", method=lm` dans la fonction `geom_smooth()`.
+
+```{r, warning=FALSE}
+ggplot(data=data_travail_Dernier, aes(x=Pibpercapita, y=CO2percapita, color=Income_group_Fr))+
+  geom_point()+
+  geom_smooth(formula = 'y ~ x', se=T, color="red", method=lm)+
+  labs(title="Émissions de CO2 par tête en fonction du PIB par tête",
+        subtitle = paste("Indicateurs du développement dans le monde,", max(data_travail$Annee)),
+       y="Émissions de CO2 per capita",
+       x="PIB per capita",
+       color="Groupe de revenu"
+       )+
+  theme_light()
+```
+
+5.  
+
+    c)  Utiliser la method de spline cubiques `method = lm, formula = y ~ splines::bs(x, 3), se = T`
+
+```{r, warning=FALSE}
+ggplot(data=data_travail_Dernier, aes(x=Pibpercapita, y=CO2percapita, color=Income_group_Fr))+
+  geom_point()+
+  geom_smooth(method = lm, formula = y ~ splines::bs(x, 3), se = T, color="red")+
+  labs(title="Émissions de CO2 par tête en fonction du PIB par tête",
+        subtitle = paste("Indicateurs du développement dans le monde,", max(data_travail$Annee)),
+       y="Émissions de CO2 per capita",
+       x="PIB per capita",
+       color="Groupe de revenu"
+       )+
+  theme_light()
+```
+
+6.  Utiliser les données extraites en 2020, pour classer les pays selon le PIB par tête dans chaque groupe de revenu.
+
+```{r}
+data_travail_Dernier<-data_travail_Dernier|>
+                      group_by(Income_group_Fr)|>
+                      arrange(desc(Pibpercapita), .by_group = T)|>
+                      mutate(Rank=1:n())|>
+                     ungroup()
+```
+
+-   Utiliser dans `size=4, shape=1` dans la fonction `geom_point()`.
+
+```{r, warning=FALSE}
+p1<-ggplot(data=data_travail_Dernier, aes(x=Pibpercapita, y=CO2percapita, color=Income_group_Fr))+
+  geom_point(size=4, shape=1)+
+  geom_smooth(method = lm, formula = y ~ splines::bs(x, 3), se = T, color="red")+
+  labs(title="Émissions de CO2 par tête en fonction du PIB par tête",
+        subtitle = paste("Indicateurs du développement dans le monde,", max(data_travail$Annee)),
+       y="Émissions de CO2 per capita",
+       x="PIB per capita",
+       color="Groupe de revenu"
+       )+
+  theme_light()
+p1
+```
+
+-   Afficher le nom des pays sur le graphique
+
+```{r}
+p2<-p1+ geom_text(aes(label=Country_Name_Fr))
+p2
+```
+
+-   Afficher seulement les premiers pays émétteurs CO2 par groupe de revenu
+
+```{r}
+p3<-p1+geom_text(aes(label=Country_Name_Fr), color="gray20",
+                 data=data_travail_Dernier|>
+                   filter(Rank<=5),check_overlap = TRUE)
+p3
+```
+
+-   Utiliser la fonction `scale_x_continuous()` pour délimiter l'axe des abscisses
+
+```{r}
+p4<-p3+scale_x_continuous(limits=c(-1000, 180000))
+p4
+```

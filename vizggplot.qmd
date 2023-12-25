@@ -1,0 +1,326 @@
+---
+title: "Visualisation: ggplot2"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+Cette section aborde la visualisation `ggplot2` dans R
+
+Tout au long de cette section nous utiliserons deux bases de données: immigration et booking.
+
+```{r, warning=FALSE,  message=FALSE}
+library(lubridate)
+library(tidyverse)
+library(patchwork)
+library(geojsonsf)
+library(sf)
+PRdataset<-read.csv("./data/ProvincePR.csv")|>
+           mutate(Date=as.Date(Date), Year=year(Date))|>
+           group_by(Province, ProgramGroup, ProgramType,Year,Date)|>
+          summarise(Value=sum(Value, na.rm=T), .groups = "drop")|>
+          mutate(ProgramGroup=ifelse(ProgramGroup=="Resettled Refugee &amp; Protected Person in Canada","Refugee & Protected Person",ProgramGroup),
+                 Group=recode(ProgramType,
+                 "Business"="Affaire",
+                 "Provincial Nominee Program"="Programme Provincial",
+                 "Temporary Resident to Permanent Resident Pathway"="Résidence temporaire",
+                 "Worker Program"="Programme Travailleur"
+               ))
+
+yeardataset<-PRdataset|>
+          group_by(Province, ProgramGroup, Group,Year)|>
+          summarise(Value=sum(Value, na.rm=T), .groups = "drop")
+
+Candataset<-PRdataset|>
+            group_by(ProgramGroup, Group,Year)|>
+          summarise(Value=sum(Value, na.rm=T), .groups = "drop")
+
+booking<-read.csv("./data/hotel_bookings.csv")
+```
+
+## ggplot2
+
+Pour utiliser les fonctions de ggplot2 il faut d'abord l'installer `install.packages("ggplot2")`. La grammaire d'un ggplot
+
+Le cadre de base d'un ggplot est `ggplot(data, aes(x, y))` - `data`: prendre les données - `aes(x,y)`: prendre les coordonnées à dessiner
+
+### Une variable continue
+
+-   Graphique en surface (area band) Pour désiner un graphique en surface on ajoute `geom_area(stat="bin")`
+
+```{r}
+p<-ggplot(data=yeardataset, aes(Value))
+p
+```
+
+```{r, message=FALSE}
+p<-p+
+  geom_area(stat="bin", fill="blue")
+p
+```
+
+`ggtitle()` permat d'ajouter un titre au graphique. `xlab()` et `ylab()` permettent de donner des titres respectivement l'axe des abscisses et à l'axe des ordonnées.
+
+```{r, message=FALSE}
+p<-p+ggtitle("Distribution des nombres des résidents permanents au Canada")+
+   xlab("Nombre des immigrants")+
+  ylab("Fréquence")
+p
+```
+
+-   Le graphique des densités : `geom_density()` Pour dessiner un graphique des densités on utilise `geom_density()` et on précise le type de densité à utiliser.
+
+```{r, message=FALSE}
+p<-ggplot(data=yeardataset, aes(Value))+
+  geom_density(kernel="gaussian")+
+  ylab("Densité")+
+  xlab("Nombre des immigrants")
+p
+```
+
+-   Graphique en points : `geom_dotplot()`
+
+```{r, message=FALSE}
+p<-ggplot(data=yeardataset, aes(Value))+
+  geom_dotplot(fill="red")+ggtitle("Distribution des nombres des résidents permanents au Canada")+
+   xlab("Nombre des immigrants")+
+  ylab("Proprtion")
+ 
+p
+```
+
+-   Histogramme Pour dessiner un histogramme, on utilise `geom_histogram()` en précisant le `binwdith`.
+
+```{r, message=FALSE}
+p<-ggplot(data=yeardataset, aes(Value))+
+  geom_histogram(stat="bin", binwidth = 500, fill="red")+ggtitle("Distribution des nombres des résidents permanents au Canada")+
+   xlab("Nombre des immigrants")+
+  ylab("Fréquence")
+ 
+p
+```
+
+### Variable discrète
+
+Pour discrète, on peut dessiner une graphique en bar ou un camembert
+
+-   Graphique en bar
+
+Pour dessiner un graphique en bar où on a une variable des labels et une variable des valeurs, on utilise `geom_col()` et `coord_flip()` pour changer les abscisses.
+
+```{r, message=FALSE}
+bardataset<-Candataset|>filter(Year==2015, ProgramGroup=="Economic")
+```
+
+```{r}
+p<-ggplot(bardataset, aes(x=Group, y=Value))+
+  geom_col()+coord_flip()+xlab("")+ylab("Nombre d'immigrants")
+p
+```
+
+On peut aussi utiliser les `geom_bar()`. Dans ce cas nous n'avons pas besoin de deux variables catégories-valeurs
+
+```{r, message=FALSE}
+booking_2015<-read.csv("./data/hotel_bookings.csv")|>
+        filter(arrival_date_year==2015, arrival_date_month=="July")
+```
+
+```{r, message=FALSE}
+p<-ggplot(booking_2015, aes(customer_type))+
+  geom_bar()
+p
+```
+
+-   Graphique en Camembert Avec `geom_bar()` et `coord_polar()` on peut dessiner un graphique en Camembert
+
+```{r, message=FALSE}
+p<-ggplot(bardataset, aes(x="", y=Value, fill=Group))+
+  geom_bar(stat="identity", width=1, color="white")+
+  coord_polar("y", start=0)+
+  theme_void()
+p
+```
+
+Pour enlever la légende on utilise `theme(legend.position="none")`
+
+```{r, message=FALSE}
+
+label_df<-bardataset|>
+        mutate(csum=rev(cumsum(rev(Value))),
+               pos=Value/2+lead(csum,1),
+               pos=if_else(is.na(pos),Value/2,pos))
+
+p<-ggplot(bardataset, aes(x="", y=Value, fill=Group))+
+  geom_col( width=1, color="white")+
+  coord_polar("y", start=0)+
+  theme_void()+
+  theme(legend.position="none")+
+  geom_text(data=label_df, aes(y = pos, label = paste(Group,"\n", "Valeur:",formatC(Value, big.mark = " ") )), color = "white", size=3,check_overlap = TRUE) +
+  scale_fill_brewer(palette="Set1")
+p
+```
+
+> Avec l'argument `palette` de la fonction `scale_fill_brewer` on peut choisir les différentes couleurs désirées:
+>
+> -   Divergente: BrBG, PiYG, PRGn, PuOr, RdBu, RdGy, RdYlBu, RdYlGn, Spectral
+> -   Qualitative: Accent, Dark2, Paired, Pastel1, Pastel2, Set1, Set2, Set3
+> -   Sequentielle: Blues, BuGn, BuPu, GnBu, Greens, Greys, Oranges, OrRd, PuBu, PuBuGn, PuRd, Purples, RdPu, Reds, YlGn, YlGnBu, YlOrBr, YlOrRd
+
+-   L'utilisation de `facet_wrap()` La fonction `facet_wrap()` permet de dessiner séparément un même graphique selon un groupe de variable
+
+```{r, message=FALSE}
+bardataset<-Candataset|>filter(ProgramGroup=="Economic")
+
+p<-ggplot(bardataset, aes(x="", y=Value, fill=Group))+
+  geom_col(width=1, color="gray")+
+  coord_polar("y", start=0)+
+  theme_void()+
+  scale_fill_brewer(palette="Set3")+
+   facet_wrap(~Year)+
+  labs(fill="PR Program")
+ 
+p
+
+```
+
+-   Boite à moustache `geom_boxplot()`
+
+```{r, message=FALSE}
+bardataset<-Candataset|>filter(ProgramGroup=="Economic")
+
+ggplot(bardataset, aes(Group,Value))+geom_boxplot()+coord_flip()
+```
+
+### Deux variables continues (X et Y)
+
+-   Nuage de points avec `geom_point()`
+
+```{r, message=FALSE}
+bardataset<-Candataset|>filter(ProgramGroup=="Economic")
+p<-ggplot(bardataset, aes(x=Year, y=Value, color=Group))+
+  geom_point()+
+  labs(color="")+
+  theme(legend.position = "bottom")
+p
+```
+
+-   graphique en line `geom_line()`
+
+```{r, message=FALSE}
+p<-ggplot(bardataset, aes(x=Year, y=Value, color=Group))+
+  geom_line()
+p
+```
+
+-   `geom_line()` avec `facet_wrap()`
+
+```{r, message=FALSE}
+p<-ggplot(bardataset, aes(x=Year, y=Value ))+
+  geom_line()+
+  facet_wrap(~Group)
+p
+```
+
+-   Ajouter une droite de regression
+
+```{r, message=FALSE}
+PRdataset_mois<-PRdataset|>group_by(ProgramGroup, Year,Date)|>
+          summarise(Value=sum(Value, na.rm=T), .groups = "drop")
+```
+
+```{r, message=FALSE}
+p<-ggplot(PRdataset_mois, aes(x=Date, y=Value ))+
+  geom_line()+
+  xlab("Date")+
+  ylab("Nombre d'immigrants")+
+  labs(title="La tendance des résidents permanents par type de programme")+
+  facet_wrap(~ProgramGroup)+
+  geom_smooth()
+p
+```
+
+-   Cartographie avec `geom_sf()`
+
+Pour cet exemple, nous servirons de la librairie `geojsonsf` pour lire les fichier `json` en ligne.
+
+```{r, message=FALSE, warning=FALSE, echo=FALSE}
+
+
+canMap<-geojson_sf("https://code.highcharts.com/mapdata/countries/ca/ca-all.geo.json")
+
+proddata<-canMap|>left_join(
+           PRdataset|>group_by(Province, ProgramGroup,Year)|>
+          summarise(Value=sum(Value, na.rm=T), .groups = "drop")|>
+          filter(Year==2015, ProgramGroup=="Economic")|>
+          mutate(NAME_1=ifelse(Province=="Quebec","Québec",Province)), by=c("name"="NAME_1"))|>
+  mutate(longitude=as.numeric(longitude),
+         latitude=as.numeric(latitude))
+
+
+```
+
+Pour trouver [les themes de ggpplot](https://ggplot2.tidyverse.org/reference/ggtheme.html)
+
+```{r}
+long <-unlist(map(proddata$geometry,1))
+lat <- unlist(map(proddata$geometry,2))
+pcan<-ggplot(data=proddata)+geom_sf(aes(fill=Value))+
+  coord_sf(xlim=c(min(long),max(long)+200 ),
+            ylim=c(min(lat)-50,max(lat)+200 ))+
+  labs(title="Immigration économique selon les Provinces",
+       subtitle = "2015",
+       fill="Valeur")+
+  theme_minimal()
+
+pcan
+```
+
+Exemple du Togo sur l'éducation par région, nous utilisons le [taux de non-scolarisation au Togo](https://data.unicef.org/wp-content/uploads/2022/08/Togo-MICS-EAGLE-Factsheets_French_082022.pdf) provenant des données de l'Unicef.
+
+```{r, message=FALSE}
+tg_sf<-geojson_sf("./data/tg-all.geo.json")|>
+  left_join(
+tibble(name=c("Maritime","Plateaux","Centre","Kara","Savanes" ), primaire=c(4,6,6,16,15), secondaire=c(10,8,8,16,25), lycee=c(27,31,24,32,38)),
+by="name")
+
+
+```
+
+```{r, message=FALSE}
+
+coord<-st_coordinates(tg_sf$geometry)
+long <-coord[,1]
+lat <- coord[,2]
+#Taux de non-scolarisation (secondaire)"
+#ggpubr::ggarrange(p1,p2,p3, ncol=3, widths = c(3, 3,3))
+p1<-ggplot(data=tg_sf)+geom_sf(aes(fill=primaire))+
+  coord_sf(xlim=c(min(long),max(long)+200 ),
+           ylim=c(min(lat),max(lat)+200 ))+
+  labs(title="Taux de non-scolarisation\nPrimaire",
+       #subtitle = "2021",
+       fill="Taux(%)")+
+  theme_minimal()
+
+p2<-ggplot(data=tg_sf)+geom_sf(aes(fill=secondaire))+
+  coord_sf(xlim=c(min(long),max(long)+200 ),
+           ylim=c(min(lat),max(lat)+200 ))+
+  labs(title="Taux de non-scolarisation\n Secondaire",
+       fill="Taux(%)")+
+  theme_minimal()
+
+p3<-ggplot(data=tg_sf)+geom_sf(aes(fill=lycee))+
+  coord_sf(xlim=c(min(long),max(long)+200 ),
+           ylim=c(min(lat),max(lat)+200 ))+
+  labs(title="Taux de non-scolarisation\nLycée",
+       #subtitle = "2021",
+       fill="Taux(%)")+
+  theme_minimal()
+
+```
+
+```{r}
+p1+p2+p3
+```
