@@ -4,4 +4,4 @@ title: "A propos"
 
 Ce cours a pour but de fournir à l'apprenant des outils nécessaires pour maitriser la manipulation des données dans R et réaliser un tableau de bord intuitif.
 
-Les données pour ce cours se trouvent sur ce [lien](./data/)
+Les données pour ce cours se trouvent sur ce [lien](https://github.com/Dzigbodi/visualisationr/tree/main/data)
