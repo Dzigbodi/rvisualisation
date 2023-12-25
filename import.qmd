@@ -7,7 +7,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-Dans ce module introduit la lecture des connées dans `R`.
+Ce module introduit la lecture des données dans `R`.
 
 ## Importation des données
 
