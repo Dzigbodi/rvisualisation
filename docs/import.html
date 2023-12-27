@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Lecture des données dans R</title>
+<title>Lecture des données</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -108,7 +108,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./import.html">Manipulation</a></li><li class="breadcrumb-item"><a href="./import.html">Lecture des données dans R</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./import.html">Manipulation</a></li><li class="breadcrumb-item"><a href="./import.html">Lecture des données</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -174,25 +174,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./import.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Lecture des données dans R</span></a>
+ <span class="menu-text">Lecture des données</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./creationselect.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Creation, fusion et manipulation</span></a>
+ <span class="menu-text">Manipulation des données</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./stringmanip.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Expression régulière</span></a>
+ <span class="menu-text">Expressions régulières</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dplyrexercice.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Exercice sur <strong><em>dplyr</em></strong></span></a>
+ <span class="menu-text">Exercice sur dplyr</span></a>
   </div>
 </li>
       </ul>
@@ -218,6 +218,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
  <span class="menu-text">Exercice Pratique ggplot2</span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./vizplotly.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Visualisation: plotly</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./exoplotly.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercice Pratique plotly</span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -235,6 +247,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#importer-un-ficher-txt" id="toc-importer-un-ficher-txt" class="nav-link" data-scroll-target="#importer-un-ficher-txt">Importer un ficher <code>txt</code></a></li>
   <li><a href="#importer-un-ficher-csv" id="toc-importer-un-ficher-csv" class="nav-link" data-scroll-target="#importer-un-ficher-csv">Importer un ficher <code>csv</code></a></li>
   <li><a href="#importer-un-ficher-xlsx" id="toc-importer-un-ficher-xlsx" class="nav-link" data-scroll-target="#importer-un-ficher-xlsx">Importer un ficher <code>xlsx</code></a></li>
+  <li><a href="#exporter-les-data.frame" id="toc-exporter-les-data.frame" class="nav-link" data-scroll-target="#exporter-les-data.frame">exporter les data.frame</a></li>
   </ul></li>
   <li><a href="#rappel-sur-les-format-date-et-factors" id="toc-rappel-sur-les-format-date-et-factors" class="nav-link" data-scroll-target="#rappel-sur-les-format-date-et-factors">Rappel sur les format Date et factors</a>
   <ul class="collapse">
@@ -249,7 +262,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Lecture des données dans R</h1>
+<h1 class="title">Lecture des données</h1>
 </div>
 
 
@@ -264,7 +277,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 </header>
 
-<p>Dans ce module introduit la lecture des connées dans <code>R</code>.</p>
+<p>Ce module introduit la lecture des données dans <code>R</code>.</p>
 <section id="importation-des-données" class="level2">
 <h2 class="anchored" data-anchor-id="importation-des-données">Importation des données</h2>
 <section id="importer-un-ficher-txt" class="level3">
@@ -340,6 +353,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 2     French Polynesia 42036    NA France  FRA Western Europe    Europe</code></pre>
 </div>
 </div>
+<p>Om peut également les fichiers d’extension <code>rdata</code> qui sont réserver à <code>R</code> en utilisant la fonction <code>load()</code>.</p>
+</section>
+<section id="exporter-les-data.frame" class="level3">
+<h3 class="anchored" data-anchor-id="exporter-les-data.frame">exporter les data.frame</h3>
+<p>Tout comme importer les fichiers dans R, on peut également exporter les tables de données en d’autres format de données.</p>
+<ul>
+<li>Pour les fichiers de type <code>.txt</code>: <code>write.table()</code></li>
+<li>Pour les fichiers de type <code>.csv</code>: <code>write.csv()</code></li>
+<li>Pour les fichiers de type <code>.xlsx</code>: <code>write.xlsx()</code></li>
+</ul>
 </section>
 </section>
 <section id="rappel-sur-les-format-date-et-factors" class="level2">
@@ -349,12 +372,73 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="variable-catégorielle-ou-nominale" class="level3">
 <h3 class="anchored" data-anchor-id="variable-catégorielle-ou-nominale">Variable catégorielle ou Nominale</h3>
+<p>R reconnait également les formats <code>date</code>.</p>
 <ul>
-<li>La fonction <code>factor()</code> sert à créer une variable catégorielle</li>
+<li>La fonction <code>Sys.Date()</code> permet de récupérer la date du système.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>genre<span class="ot">&lt;-</span><span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">"Masculin"</span>,<span class="st">"Féminin"</span>,<span class="st">"Masculin"</span>,<span class="st">"Masculin"</span>,<span class="st">"Féminin"</span>,<span class="st">"Féminin"</span>,<span class="st">"Féminin"</span>))</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>genre</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Sys.Date</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "2023-12-26"</code></pre>
+</div>
+</div>
+<p>On peut changer le format des dates.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(<span class="fu">Sys.Date</span>(), <span class="st">"%a %b %d"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "mar. déc. 26"</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">format</span>(<span class="fu">Sys.Date</span>(), <span class="st">"%Y/%m/%d"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "2023/12/26"</code></pre>
+</div>
+</div>
+<p>Nous pouvons également convertir une variable numérique ou une variable de type caractère en format <code>date</code> avec la fonction <code>as.Date()</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"02/27/00"</span>, <span class="st">"02/27/00"</span>, <span class="st">"01/14/00"</span>)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>(z <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(x, <span class="at">format=</span><span class="st">"%m/%d/%y"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "2000-02-27" "2000-02-27" "2000-01-14"</code></pre>
+</div>
+</div>
+<p>Lorsqu’on importe une date d’excel, le format date se transforme en numérique. Pour le convertir en format date, on utilise: - origin=“1899-12-30” si c’est le SO est un windows - origin=“1904-01-01” si le SO est un mac</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.Date</span>(<span class="dv">40000</span>, <span class="at">origin =</span> <span class="st">"1899-12-30"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "2009-07-06"</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.Date</span>(<span class="dv">40000</span>, <span class="at">origin =</span> <span class="st">"1904-01-01"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "2013-07-07"</code></pre>
+</div>
+</div>
+<ul>
+<li>Nous pouvons générer les séquences de date à partir d’une date de début et/ou d’une date de fin avec la fonction seq.Date( )</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq.Date</span>(<span class="at">from=</span><span class="fu">as.Date</span>(<span class="st">"2020/01/01"</span>), <span class="at">to=</span><span class="fu">as.Date</span>(<span class="st">"2020/01/15"</span>), <span class="at">by=</span><span class="st">"day"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "2020-01-01" "2020-01-02" "2020-01-03" "2020-01-04" "2020-01-05"
+ [6] "2020-01-06" "2020-01-07" "2020-01-08" "2020-01-09" "2020-01-10"
+[11] "2020-01-11" "2020-01-12" "2020-01-13" "2020-01-14" "2020-01-15"</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">seq.Date</span>(<span class="at">from=</span><span class="fu">as.Date</span>(<span class="st">"2020/01/01"</span>), <span class="at">length=</span><span class="dv">15</span>, <span class="at">by=</span><span class="st">"day"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "2020-01-01" "2020-01-02" "2020-01-03" "2020-01-04" "2020-01-05"
+ [6] "2020-01-06" "2020-01-07" "2020-01-08" "2020-01-09" "2020-01-10"
+[11] "2020-01-11" "2020-01-12" "2020-01-13" "2020-01-14" "2020-01-15"</code></pre>
+</div>
+</div>
+<p>Dans la fonction <code>seq.Date()</code> <code>by</code> peut prendre <code>month</code>, <code>quarter</code>, <code>year</code> - La fonction <code>factor()</code> sert à créer une variable catégorielle</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>genre<span class="ot">&lt;-</span><span class="fu">factor</span>(<span class="fu">c</span>(<span class="st">"Masculin"</span>,<span class="st">"Féminin"</span>,<span class="st">"Masculin"</span>,<span class="st">"Masculin"</span>,<span class="st">"Féminin"</span>,<span class="st">"Féminin"</span>,<span class="st">"Féminin"</span>))</span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>genre</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] Masculin Féminin  Masculin Masculin Féminin  Féminin  Féminin 
 Levels: Féminin Masculin</code></pre>
@@ -364,7 +448,7 @@ Levels: Féminin Masculin</code></pre>
 <li>La fonction <code>levels()</code> sert à définir les modalités.</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(genre) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(genre) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Féminin"  "Masculin"</code></pre>
 </div>
@@ -373,9 +457,9 @@ Levels: Féminin Masculin</code></pre>
 <li>Pour labelliser une variable catégorielle</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>genre<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">1</span>)</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>genre<span class="ot">&lt;-</span><span class="fu">factor</span>(genre, <span class="at">levels=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"Masculin"</span>,<span class="st">"Féminin"</span>))</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>genre</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>genre<span class="ot">&lt;-</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">1</span>)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>genre<span class="ot">&lt;-</span><span class="fu">factor</span>(genre, <span class="at">levels=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>), <span class="at">labels=</span><span class="fu">c</span>(<span class="st">"Masculin"</span>,<span class="st">"Féminin"</span>))</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a>genre</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] Masculin Masculin Masculin Féminin  Féminin  Masculin Féminin  Masculin
 Levels: Masculin Féminin</code></pre>
@@ -385,12 +469,12 @@ Levels: Masculin Féminin</code></pre>
 <li>La fonction <code>relevel()</code> permet de redéfinir le label de référence (très utile pour les modèles logit)</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(genre)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(genre)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Masculin" "Féminin" </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>genre<span class="ot">&lt;-</span><span class="fu">relevel</span>(genre, <span class="at">ref=</span><span class="dv">2</span>)</span>
-<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(genre)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>genre<span class="ot">&lt;-</span><span class="fu">relevel</span>(genre, <span class="at">ref=</span><span class="dv">2</span>)</span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(genre)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Féminin"  "Masculin"</code></pre>
 </div>
@@ -399,12 +483,12 @@ Levels: Masculin Féminin</code></pre>
 <li>La fonction <code>revalue()</code> de la librairie <code>plyr</code> permet de recoder les labels,</li>
 </ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(genre)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(genre)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Féminin"  "Masculin"</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>genre_r<span class="ot">&lt;-</span>plyr<span class="sc">::</span> <span class="fu">revalue</span>(genre, <span class="fu">c</span>(<span class="st">"Masculin"</span><span class="ot">=</span><span class="st">"Homme"</span>,<span class="st">"Féminin"</span><span class="ot">=</span><span class="st">"Femme"</span>))</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(genre_r)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>genre_r<span class="ot">&lt;-</span>plyr<span class="sc">::</span> <span class="fu">revalue</span>(genre, <span class="fu">c</span>(<span class="st">"Masculin"</span><span class="ot">=</span><span class="st">"Homme"</span>,<span class="st">"Féminin"</span><span class="ot">=</span><span class="st">"Femme"</span>))</span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a><span class="fu">levels</span>(genre_r)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] "Femme" "Homme"</code></pre>
 </div>

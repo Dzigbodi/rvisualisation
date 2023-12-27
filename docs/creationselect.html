@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Creation, fusion et manipulation</title>
+<title>Manipulation des données</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -94,8 +94,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
-  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.15.1/dist/katex.min.css">
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -110,7 +124,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./import.html">Manipulation</a></li><li class="breadcrumb-item"><a href="./creationselect.html">Creation, fusion et manipulation</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./import.html">Manipulation</a></li><li class="breadcrumb-item"><a href="./creationselect.html">Manipulation des données</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -176,25 +190,25 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./import.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Lecture des données dans R</span></a>
+ <span class="menu-text">Lecture des données</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./creationselect.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Creation, fusion et manipulation</span></a>
+ <span class="menu-text">Manipulation des données</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./stringmanip.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Expression régulière</span></a>
+ <span class="menu-text">Expressions régulières</span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="./dplyrexercice.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text">Exercice sur <strong><em>dplyr</em></strong></span></a>
+ <span class="menu-text">Exercice sur dplyr</span></a>
   </div>
 </li>
       </ul>
@@ -218,6 +232,18 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <div class="sidebar-item-container"> 
   <a href="./exoggplot.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">Exercice Pratique ggplot2</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./vizplotly.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Visualisation: plotly</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./exoplotly.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exercice Pratique plotly</span></a>
   </div>
 </li>
       </ul>
@@ -261,6 +287,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#str_extract" id="toc-str_extract" class="nav-link" data-scroll-target="#str_extract"><code>str_extract</code></a></li>
   <li><a href="#match-en-groupe" id="toc-match-en-groupe" class="nav-link" data-scroll-target="#match-en-groupe">Match en groupe</a></li>
   </ul></li>
+  <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference">Reference</a></li>
   </ul>
 </nav>
     </div>
@@ -269,7 +296,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Creation, fusion et manipulation</h1>
+<h1 class="title">Manipulation des données</h1>
 </div>
 
 
@@ -309,7 +336,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="création-ou-transformation-de-variables-mutate" class="level3">
 <h3 class="anchored" data-anchor-id="création-ou-transformation-de-variables-mutate">Création ou transformation de variables: <code>mutate()</code></h3>
-<p>La function <code>mutate()</code> permet de créer une variable ou de transformer une variable existante. Pour attacher les données à une fonction, on sert de l’instruction <code>%&gt;%</code> ou <code>|&gt;</code>. C’est comme si on écrivait: <span class="math inline">\(f(x,y)\)</span>, <span class="math inline">\(x\)</span> étant le <code>tibble</code> ou le <code>data.frame</code> passé en argument. Utilisons la table de données <code>Produits</code> pour créer la valeur des produits</p>
+<p>La function <code>mutate()</code> permet de créer une variable ou de transformer une variable existante. Pour attacher les données à une fonction, on sert de l’instruction <code>%&gt;%</code> ou <code>|&gt;</code>. C’est comme si on écrivait: <span class="math inline">f(x,y)</span>, <span class="math inline">x</span> étant le <code>tibble</code> ou le <code>data.frame</code> passé en argument. Utilisons la table de données <code>Produits</code> pour créer la valeur des produits</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Produits<span class="ot">&lt;-</span>Produits<span class="sc">|&gt;</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>          <span class="fu">mutate</span>(<span class="at">Valeur=</span>Prix<span class="sc">*</span>Quantite)</span>
@@ -1143,9 +1170,17 @@ Exercice
 </ol>
 </div>
 </div>
-
-
 </section>
+</section>
+<section id="reference" class="level2">
+<h2 class="anchored" data-anchor-id="reference">Reference</h2>
+<ol type="1">
+<li>Schauberger P, Walker A (2023). <em>openxlsx: Read, Write and Edit xlsx Files</em>. R package version 4.2.5.2, <a href="https://CRAN.R-project.org/package=openxlsx" class="uri">https://CRAN.R-project.org/package=openxlsx</a>.</li>
+<li>Wickham H, Averick M, Bryan J, Chang W, McGowan LD, François R, Grolemund G, Hayes A, Henry L, Hester J, Kuhn M, Pedersen TL, Miller E, Bache SM, Müller K, Ooms J, Robinson D, Seidel DP, Spinu V, Takahashi K, Vaughan D, Wilke C, Woo K, Yutani H (2019). “Welcome to the tidyverse.” <em>Journal of Open Source Software</em>, <em>4</em>(43),</li>
+<li>doi:10.21105/joss.01686 <a href="https://doi.org/10.21105/joss.01686" class="uri">https://doi.org/10.21105/joss.01686</a>.</li>
+</ol>
+
+
 </section>
 
 </main> <!-- /main -->

@@ -1,0 +1,210 @@
+---
+title: "Exercice Pratique plotly"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Dans cet exercice nous allons utiliser les données des [Indicateurs du développement dans le monde](https://donnees.banquemondiale.org/indicateur/EN.ATM.CO2E.PC). Les données concernent les Émissions de CO2 (tonnes métriques par habitant).
+
+0. Lire le fichier sauvegardé lors de l’exercice sur dplyr. Dans la suite de cet exercice nous allons utiliser ce fichier.
+
+```{r, message=FALSE}
+library(tidyverse)
+library(plotly)
+```
+
+```{r}
+data_travail<-read.csv("./data/exercice_dplyr.csv")
+```
+
+# Utilisation de plotly
+
+1.  Filtrer la dernière année de la table fusionnée
+
+```{r}
+data_travail_Dernier<-data_travail|>
+  filter(Annee==max(Annee))
+```
+
+2.  Tracer l'histogramme des émissions de CO2 et du PIB Courant. Ajouter les titres et modifier les axes des abscisses et des ordornées.
+
+```{r}
+fig<-plot_ly(data=data_travail_Dernier, x=~CO2percapita,
+             nbinsx=20,
+             type="histogram"
+             )|>
+  layout(title=paste0("Émissions de CO2 par tête","\n", paste("Indicateurs du développement dans le monde,", max(data_travail$Annee)) ),
+         xaxis=list(title="Émissions de CO2 par tête"), yaxis=list(title="Fréquence"))
+fig
+```
+
+```{r}
+fig<-plot_ly(data=data_travail_Dernier, x=~Pibpercapita,
+             nbinsx=30,
+             type="histogram"
+             )|>
+  layout(title=paste0("PIB courant par tête","\n", paste("Indicateurs du développement dans le monde,", max(data_travail$Annee)) ),
+         xaxis=list(title="PIB par tête"), yaxis=list(title="Fréquence"))
+fig
+```
+
+3.  Tracer les diagrammes en moustache du PIB courant par tête par région économique
+
+```{r}
+fig<-plot_ly(data=data_travail_Dernier, x=~Pibpercapita, color=~Income_group_Fr, type="box")|>
+     layout(title=paste0("PIB courant par tête","\n", paste("Indicateurs du développement dans le monde,", max(data_travail$Annee)) ),
+            xaxis=list(title=""),
+            showlegend=F)
+fig
+```
+
+4.  Tracer les diagrammes en moustache du Émissions de CO2 par tête par région économique
+
+```{r}
+fig<-plot_ly(data=data_travail_Dernier, x=~CO2percapita, color=~Income_group_Fr, type="box")|>
+     layout(title=paste0("Émissions de CO2 par tête","\n", paste("Indicateurs du développement dans le monde,", max(data_travail$Annee)) ),
+            xaxis=list(title=""),
+            showlegend=F)
+fig
+```
+
+5. a)  Tracer les nuages de points l'émission de CO2 par tête en fonction du PIB par tête, en identifiant les groupes de revenu
+
+```{r, warning=FALSE, error=FALSE, message=FALSE}
+fig<-plot_ly(data=data_travail_Dernier, x=~Pibpercapita, y=~CO2percapita, color=~Income_group_Fr,
+             type="scatter", mode='markers')|>
+  layout(title=paste0("Émissions de CO2 par tête en fonction du PIB par tête","\n", paste("Indicateurs du développement dans le monde,", max(data_travail$Annee))),
+         xaxis=list(title="PIB per capita"),
+         yaxis=list(title="PIB per capita"),
+         legend= list(orientation='h', y=-0.2))
+
+fig
+```
+
+5.  
+
+    b)  Ajouter un droite de regression sur les nuages de points.
+
+Pour cela nous allons d'abord faire la régression de Pibpercapita sur CO2percapita.
+
+```{r}
+reg_model<-lm(formula=CO2percapita~Pibpercapita, data=data_travail_Dernier)
+
+alpha<-0.05
+x_seq<-seq(from=min(data_travail_Dernier$Pibpercapita), to=max(data_travail_Dernier$Pibpercapita), length=nrow(data_travail_Dernier))
+fit_y<-predict.lm(object =reg_model, newdata = data.frame(Pibpercapita=x_seq),se.fit = T )
+
+data_fit<-tibble(Pibpercapita=x_seq, fit=fit_y$fit, fit_min=fit_y$fit+qnorm(alpha/2), fit_max=fit_y$fit+qnorm(1-alpha/2))
+```
+
+```{r, warning=FALSE, error=FALSE, message=FALSE}
+fig<-plot_ly(data=data_fit, x=~x_seq, y=~fit_max, type='scatter', mode='lines', showlegend = F,line = list(color = 'transparent'))
+
+fig<-fig|>add_trace(data=data_fit, x=~x_seq, y=~fit_min, type='scatter', mode='lines', fill = 'tonexty', fillcolor='rgba(255,0,0,0.2)', line = list(color = 'transparent'),
+            showlegend = F, name = 'min')
+fig<-fig|>add_trace(data=data_fit, x=~x_seq, y=~fit, type='scatter', mode='lines', line = list(color = 'rgba(255,0,0)'),showlegend = F, name="Droite de regression")
+
+fig<-fig|>add_trace(data=data_travail_Dernier, x=~Pibpercapita, y=~CO2percapita, color=~Income_group_Fr, type="scatter", mode='markers',showlegend = T)|>
+  layout(title=paste0("Émissions de CO2 par tête en fonction du PIB par tête","\n", paste("Indicateurs du développement dans le monde,", max(data_travail$Annee))),
+         xaxis=list(title="PIB per capita"),
+         yaxis=list(title="PIB per capita"),
+         legend= list(orientation='h', y=-0.2))
+fig
+```
+
+5.  
+
+    c)  Utiliser la method de spline cubiques
+
+```{r}
+reg_model_bs<-lm(formula=CO2percapita~splines::bs(Pibpercapita, 3), data=data_travail_Dernier)
+
+alpha<-0.05
+x_seq<-seq(from=min(data_travail_Dernier$Pibpercapita), to=max(data_travail_Dernier$Pibpercapita), length=nrow(data_travail_Dernier))
+fit_y<-predict.lm(object =reg_model_bs, newdata = data.frame(Pibpercapita=x_seq),se.fit = T )
+
+data_fit_bs<-tibble(Pibpercapita=x_seq, fit=fit_y$fit, fit_min=fit_y$fit+qnorm(alpha/2), fit_max=fit_y$fit+qnorm(1-alpha/2))
+```
+
+```{r, warning=FALSE, error=FALSE, message=FALSE}
+fig<-plot_ly(data=data_fit_bs, x=~x_seq, y=~fit_max, type='scatter', mode='lines', showlegend = F,line = list(color = 'transparent'))
+
+fig<-fig|>add_trace(data=data_fit_bs, x=~x_seq, y=~fit_min, type='scatter', mode='lines', fill = 'tonexty', fillcolor='rgba(255,0,0,0.2)', line = list(color = 'transparent'),
+            showlegend = F, name = 'min')
+fig<-fig|>add_trace(data=data_fit_bs, x=~x_seq, y=~fit, type='scatter', mode='lines', line = list(color = "red"),showlegend = F, name="Droite de regression")
+
+fig<-fig|>add_trace(data=data_travail_Dernier, x=~Pibpercapita, y=~CO2percapita, color=~Income_group_Fr, type="scatter", mode='markers',showlegend = T)|>
+  layout(title=paste0("Émissions de CO2 par tête en fonction du PIB par tête","\n", paste("Indicateurs du développement dans le monde,", max(data_travail$Annee))),
+         xaxis=list(title="PIB per capita"),
+         yaxis=list(title="PIB per capita"),
+         legend= list(orientation='h', y=-0.2))
+fig
+```
+
+6.  Utiliser les données extraites en 2020, pour classer les pays selon le PIB par tête dans chaque groupe de revenu.
+
+```{r}
+data_travail_Dernier<-data_travail_Dernier|>
+                      group_by(Income_group_Fr)|>
+                      arrange(desc(Pibpercapita), .by_group = T)|>
+                      mutate(Rank=1:n())|>
+                     ungroup()
+```
+
+-   Utiliser dans `marker()` avec `size=10`, et afficher les cinq premiers pays en terme d'émission de CO2 avec la fonction `annotations` dans le `layout()`
+
+```{r, warning=FALSE, error=FALSE, message=FALSE}
+fig1<-plot_ly(data=data_fit_bs, x=~x_seq, y=~fit_max, type='scatter', mode='lines', showlegend = F,line = list(color = 'transparent'))
+
+fig1<-fig1|>add_trace(data=data_fit_bs, x=~x_seq, y=~fit_min, type='scatter', mode='lines', fill = 'tonexty', fillcolor='rgba(255,0,0,0.2)', line = list(color = 'transparent'),
+            showlegend = F, name = 'min')
+fig1<-fig1|>add_trace(data=data_fit_bs, x=~x_seq, y=~fit, type='scatter', mode='lines', line = list(color = "red"),showlegend = F, name="Droite de regression")
+
+fig1<-fig1|>add_trace(data=data_travail_Dernier, x=~Pibpercapita, y=~CO2percapita, color=~Income_group_Fr, type="scatter", mode="scatter+text", 
+                      #text=~Country_Name_Fr_b,
+                      marker=list(size=10, line=list(color = 'rgba(152, 0, 0, .8)',width=2)),
+                        showlegend = T)
+
+fig1<-fig1|>
+  layout(title=paste0("Émissions de CO2 par tête en fonction du PIB par tête","\n", paste("Indicateurs du développement dans le monde,", max(data_travail$Annee))),
+         xaxis=list(title="PIB per capita", range=c(-10000, 180000)),
+         yaxis=list(title="PIB per capita"),
+         legend= list(orientation='h', y=-0.2), 
+         annotations=list(x=data_travail_Dernier$Pibpercapita[data_travail_Dernier$Rank<=5],
+                          y=data_travail_Dernier$CO2percapita[data_travail_Dernier$Rank<=5],
+                          text=data_travail_Dernier$Country_Name_Fr[data_travail_Dernier$Rank<=5],
+                          xref = "x",
+                           yref = "y",
+                          showarrow=F,
+                            font = list(color = 'grey',
+                              family = 'sans serif',
+                              size = 14)))
+fig1
+
+```
+
+```{r}
+data_travail<-data_travail|>
+                      group_by(Income_group_Fr,Annee)|>
+                      arrange(desc(Pibpercapita), .by_group = T)|>
+                      mutate(Rank=1:n())|>
+                     ungroup()
+```
+
+```{r}
+fig<-plot_ly(data=data_travail,
+             x=~Pibpercapita, 
+             y=~CO2percapita, 
+             frame=~Annee,
+             text=~Country_Name_Fr,
+             color=~Income_group_Fr, 
+             type="scatter", mode='markers',showlegend = T)
+fig<-fig|>
+  layout(title=paste0("Émissions de CO2 par tête en fonction du PIB par tête","\n", paste("Indicateurs du développement dans le monde,", max(data_travail$Annee))),
+         xaxis=list(title="PIB per capita"),
+         yaxis=list(title="PIB per capita"),
+         legend= list(orientation='h', y=-0.4))
+fig
+```

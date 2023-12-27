@@ -24,9 +24,17 @@ website:
           contents: 
           - href: vizggplot.qmd
           - href: exoggplot.qmd
+          - href: vizplotly.qmd
+          - href: exoplotly.qmd
+          
           
 format:
  html: 
   theme: cosmo
   css: styles.css
   toc: true
+  fig-width: 8
+  fig-height: 6
+  html-math-method: katex
+  code-fold: false
+

@@ -1,5 +1,5 @@
 ---
-title: "Lecture des données dans R"
+title: "Lecture des données"
 ---
 
 ```{r setup, include=FALSE}
@@ -66,12 +66,69 @@ head(PR,2)
 
 ```
 
+Om peut également les fichiers d'extension `rdata` qui sont réserver à `R` en utilisant la fonction `load()`.
+
+### exporter les data.frame 
+Tout comme importer les fichiers dans R, on peut également exporter les tables de données en d'autres format de données.
+
+- Pour les fichiers de type `.txt`: `write.table()`
+- Pour les fichiers de type `.csv`: `write.csv()`
+- Pour les fichiers de type `.xlsx`: `write.xlsx()`
+
+
 ## Rappel sur les format Date et factors
 
 ### Format Date
 
 ### Variable catégorielle ou Nominale
 
+R reconnait également les formats `date`. 
+
+- La fonction `Sys.Date()` permet de récupérer la date du système.
+
+```{r}
+Sys.Date()
+```
+
+On peut changer le format des dates.
+
+```{r}
+format(Sys.Date(), "%a %b %d")
+```
+
+```{r}
+format(Sys.Date(), "%Y/%m/%d")
+```
+
+Nous pouvons également convertir une variable numérique ou une variable de type caractère en format `date` avec la fonction `as.Date()`.
+
+```{r}
+x <- c("02/27/00", "02/27/00", "01/14/00")
+(z <- as.Date(x, format="%m/%d/%y"))
+```
+
+Lorsqu'on importe une date d'excel, le format date se transforme en numérique. Pour le convertir en format date, on utilise:
+- origin="1899-12-30" si c'est le SO est un windows
+- origin="1904-01-01" si le SO est un mac
+
+```{r}
+as.Date(40000, origin = "1899-12-30")
+```
+
+```{r}
+as.Date(40000, origin = "1904-01-01")
+```
+
+- Nous pouvons générer les séquences de date à partir d'une date de début et/ou d'une date de fin avec la fonction seq.Date( )
+```{r}
+seq.Date(from=as.Date("2020/01/01"), to=as.Date("2020/01/15"), by="day")
+```
+
+```{r}
+seq.Date(from=as.Date("2020/01/01"), length=15, by="day")
+```
+
+Dans la fonction `seq.Date()` `by` peut prendre `month`, `quarter`, `year`
 -   La fonction `factor()` sert à créer une variable catégorielle
 
 ```{r}

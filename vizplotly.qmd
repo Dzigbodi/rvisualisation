@@ -1,0 +1,346 @@
+---
+title: "Visualisation: plotly"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Ce module introduit la visualisation avec le `plotly`. 
+
+Tout au long du module, nous utiliserons deux bases de données: [immigration](./data/ProvincePR.csv) et [hotel booking](./data/hotel_bookings.csv).
+
+```{r, warning=FALSE,  message=FALSE}
+library(lubridate)
+library(tidyverse)
+library(plotly)
+library(patchwork)
+library(geojsonsf)
+library(sf)
+
+PRdataset<-read.csv("./data/ProvincePR.csv")|>
+           mutate(Date=as.Date(Date), Year=year(Date))|>
+           group_by(Province, ProgramGroup, ProgramType,Year,Date)|>
+          summarise(Value=sum(Value, na.rm=T), .groups = "drop")|>
+          mutate(ProgramGroup=ifelse(ProgramGroup=="Resettled Refugee &amp; Protected Person in Canada","Refugee & Protected Person",ProgramGroup),
+                 Group=recode(ProgramType,
+                 "Business"="Affaire",
+                 "Provincial Nominee Program"="Programme Provincial",
+                 "Temporary Resident to Permanent Resident Pathway"="Résidence temporaire",
+                 "Worker Program"="Programme Travailleur"
+               ))
+
+yeardataset<-PRdataset|>
+          group_by(Province, ProgramGroup, Group,Year)|>
+          summarise(Value=sum(Value, na.rm=T), .groups = "drop")
+
+Candataset<-PRdataset|>
+            group_by(ProgramGroup, Group,Year)|>
+          summarise(Value=sum(Value, na.rm=T), .groups = "drop")
+
+booking<-read.csv("./data/hotel_bookings.csv")
+```
+
+La librairie plotly permet de dessiner des graphiques interactifs. Le principe est le même que la librairie `ggplot2`. Un graphique plotly se dessine avec la fonction plot_ly().
+
+## plotly
+### Une seule variable
+
+-   Diagramme en Camembert
+
+
+```{r, message=FALSE}
+fig<-plot_ly(data=Candataset|>
+               filter(ProgramGroup=="Economic", Year==2022), labels=~Group, values=~Value, type='pie')
+
+fig<-fig|>layout(title='Type de programme economique en 2022',
+                 xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+         yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+
+fig
+```
+
+On peut aussi enlever la légende
+
+```{r, message=FALSE}
+colors <- c('#66c2a5', '#fc8d62', '#8da0cb', '#e78ac3')
+df<-Candataset|>
+               filter(ProgramGroup=="Economic", Year==2022)
+fig<-plot_ly(data=df, 
+             labels=~Group, values=~Value, type='pie',
+             textposition='inside',
+             textinfo='label+percent',
+             insidetextfont=list(color='white'),
+             hoverinfo='text',
+             text=~paste('Résident permanent:', formatC(Value, big.mark = " ")),
+               marker = list(colors = colors,
+                      line = list(color = '#FFFFFF', width = 1)),
+             showlegend=FALSE)
+fig<-fig|>layout(title='Type de programme economique en 2022',
+                 xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+         yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+fig
+
+```
+
+
+Nous pouvons dessiner les sous-graphiques. Pour le faire on utile la fonction `domain` de `plot_ly()`.
+
+```{r}
+Pie_df<-PRdataset|>
+            group_by(ProgramGroup, Year)|>
+          summarise(Value=sum(Value, na.rm=T), .groups = "drop")|>
+          filter(Year>=2021)
+```
+
+```{r}
+fig<-plot_ly()
+
+domain_list<-list("2021"=list(x=c(0,0.5), y=c(0,0.5)),
+                  "2022"=list(x=c(0,0.5), y=c(0.5,1)),
+                  "2023"=list(x=c(0.5,1), y=c(0,.5))
+                  )
+for(Y in c(2021:2023)) fig<-fig|>add_pie(
+  data=PRdataset|>filter(Year==Y),
+       labels=~ProgramGroup, values=~Value,
+      name=paste0("Année:",as.character(Y)),
+      domain=domain_list[[as.character(Y)]]
+)
+
+fig<-fig|>layout(title='Type de programme economique entre  2021 et 2023',
+                 xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+         yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+fig
+
+```
+
+-   En utilisant le référence `row` et `column`
+
+```{r}
+fig<-plot_ly()
+
+domain_list<-list("2020"=list(row=0, column=0),
+                  "2021"=list(row=0, column=1),
+                  "2022"=list(row=1, column=0),
+                  "2023"=list(row=1, column=1)
+                  )
+for(Y in c(2020:2023)) fig<-fig|>add_pie(
+  data=PRdataset|>filter(Year==Y),
+       labels=~ProgramGroup, values=~Value,
+      name=paste0("Année:",as.character(Y)),
+      domain=domain_list[[as.character(Y)]]
+)
+
+fig<-fig|>layout(title='Type de programme economique entre  2020 et 2023',
+                 grid=list(rows=2, columns=2),
+                 xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+         yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+fig
+```
+
+-   Graphique en beignet (Donut)
+
+```{r}
+fig<-plot_ly(data=Candataset|>
+               filter(ProgramGroup=="Economic", Year==2022), labels=~Group, values=~Value, type='pie', hole=0.6)
+
+fig<-fig|>layout(title='Type de programme economique en 2022',
+                 xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+         yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+fig
+```
+
+-   Graphique en bar Pour le graphique en bar on utilise le type="bar".
+
+```{r}
+fig<-plot_ly(data=Candataset|>
+               filter(ProgramGroup=="Economic", Year==2022), x=~Group, y=~Value, type='bar')
+fig<-fig|>
+     layout(title='Type de programme economique en 2022',
+            xaxis=list(title="Type de programme"),yaxis=list(title="Nombre de personne") )
+fig
+```
+
+-   Plusieurs graphique en bar
+
+```{r}
+df<-Candataset|>
+               filter(ProgramGroup=="Economic")
+fig<-plot_ly(data=df|>filter(Year==2021), x=~Group, y=~Value, type='bar', name="2021")
+
+for( Y in 2022:2023) fig<-fig|>
+  add_trace(data = df|>filter(Year==Y),y=~Value, name=as.character(Y) )
+
+fig<-fig|>layout(yaxis=list(title="Nombre de personne"), xaxis=list(title=""), barmode='group')
+
+fig
+
+```
+
+```{r, message=FALSE}
+df<-Candataset|>
+               filter(ProgramGroup=="Economic")|>filter(Year>=2021)|>
+               select(Group, Year, Value)
+
+
+fig<-plot_ly(data=df|>filter(Year==2021), x=~Group, y=~Value, type='bar', name='2021')
+
+for( Y in 2022:2023) fig<-fig|>
+  add_trace(data=df|>filter(Year==Y),x=~Group,y=~Value, name=as.character(Y) )
+
+fig<-fig|>layout(yaxis=list(title="Nombre de personne"), barmode = 'stack')
+
+fig
+```
+
+### Deux variables continues
+
+-   Graphique en line
+
+```{r}
+df<-Candataset|>filter(ProgramGroup=="Economic",Group=="Affaire")
+fig<-plot_ly(data=df, x=~Year, y=~Value, type='scatter', mode='lines')
+fig|>
+  layout(yaxis=list(title="Nombre de personne"), xaxis=list(title="Année"))
+```
+
+```{r}
+df<-Candataset|>filter(ProgramGroup=="Economic",Group=="Affaire")
+fig<-plot_ly(data=df, x=~Year, y=~Value, type='scatter', mode='markers')
+fig|>
+  layout(yaxis=list(title="Nombre de personne"), xaxis=list(title="Année"))
+```
+
+```{r}
+df<-Candataset|>filter(ProgramGroup=="Economic",Group=="Affaire")
+fig<-plot_ly(data=df, x=~Year, y=~Value, type='scatter', mode='lines+markers')
+fig|>
+  layout(yaxis=list(title="Nombre de personne"), xaxis=list(title="Année"))
+```
+
+```{r}
+df<-Candataset|>filter(ProgramGroup=="Economic")
+
+fig<-plot_ly(data=df, x=~Year, y=~Value, type='scatter', mode='lines', color =~Group )
+fig|>
+  layout(yaxis=list(title="Nombre de personne"), xaxis=list(title="Année"))
+```
+
+### Cartographie
+
+Nous lisons ici [le shapefile du Togo](./data/tg-all.geo.json)
+
+```{r, message=FALSE}
+tg_sf<-geojson_sf("./data/tg-all.geo.json")|>
+  left_join(
+tibble(name=c("Maritime","Plateaux","Centre","Kara","Savanes" ), primaire=c(4,6,6,16,15), secondaire=c(10,8,8,16,25), lycee=c(27,31,24,32,38)),
+by="name")
+ plot_ly(tg_sf, split=~name,
+         color=~primaire,
+         showlegend = F,
+         alpha =1 )|>
+   layout(title="Taux de non-scolarisation")
+```
+
+### Animation
+
+Il est aussi possible de faire des animations avec la librairie `plotly`, avec l'option `frame`.
+
+```{r}
+df<-Candataset|>filter(ProgramGroup=="Economic")
+fig<-plot_ly(data=df, x=~Group, y=~Value, 
+             type='bar',
+             frame=~Year,
+             showlegend=F
+             )|>
+  animation_slider(currentvalue = list(prefix = "YEAR ", font = list(color="red")))
+fig|>
+  layout(yaxis=list(title="Nombre de personne"), xaxis=list(title="Année"))
+```
+
+### Graphiques en bulles
+
+- Simple graphique
+
+La librairie `WDI` permet d'imporrter les données de [world development Indicators](https://databank.worldbank.org/source/world-development-indicators)
+```{r}
+
+library(WDI)
+dat <- WDI(indicator=c('RGDP'='NY.GDP.MKTP.KD',
+                       'Corruption'='CC.EST',
+                       'Popu_lcity'='EN.URB.LCTY'), country="all", start=2010, end=2022)|>right_join(
+  read.csv('./data/Metadata.csv', sep=";"), by=c('country'='Country_Name_En'))
+
+
+```
+
+	
+
+```{r}
+df<-dat|>filter(year==2021, !is.na(RGDP)&!is.na(Corruption) &!is.na(Popu_lcity))|>
+  mutate(`Grande ville`=round(Popu_lcity/500000,0))
+
+fig<-plot_ly(data=df,
+             x=~RGDP,
+             y=~Corruption,
+             text=~Country_Name_Fr,
+             type=~'scatter',
+             mode='markers',
+             marker=list(size=~`Grande ville`, opacity=0.4))
+fig|>
+  layout(title="Corruption en fonction de PIB \n Selon la taille des grandes villes",xaxis=list(title="PIB réel"), yaxis=list(title="Indice de corruption"))
+```
+
+- Ajouter la variable de couleur et rendre le graphique dynamique
+
+Comme nous l'avons vu la variable `frame` permet de rendre le graphique dynamique.
+
+```{r, warning=FALSE, message=FALSE}
+df<-dat|>filter( !is.na(RGDP)&!is.na(Corruption) &!is.na(Popu_lcity))|>
+  mutate(`Grande ville`=round(Popu_lcity/600000,0))
+
+fig<-plot_ly(data=df,
+             x=~RGDP,
+             y=~Corruption,
+             text=~Country_Name_Fr,
+             frame=~year,
+             type=~'scatter',
+             mode='markers',
+             color=~`Income_group_Fr`,
+             size=~`Grande ville`,
+             marker=list( opacity=0.4, sizemode = 'diameter'),
+         showlegend=T)
+fig<-fig|>
+  layout(title="Corruption en fonction de PIB \n Selon la taille des grandes villes",xaxis=list(title="PIB réel"), yaxis=list(title="Indice de corruption"))
+
+fig
+```
+
+### Utilisation de `ggploty()`
+
+Nous pouvons convertir les graphiques ggplot2 en plotly.
+```{r, message=FALSE}
+PRdataset_mois<-PRdataset|>group_by(ProgramGroup, Year,Date)|>
+          summarise(Value=sum(Value, na.rm=T), .groups = "drop")
+```
+
+```{r, message=FALSE}
+p<-ggplot(PRdataset_mois, aes(x=Date, y=Value ))+
+  geom_line()+
+  xlab("Date")+
+  ylab("Nombre d'immigrants")+
+  labs(title="La tendance des résidents permanents par type de programme")+
+  facet_wrap(~ProgramGroup)+
+  geom_smooth()
+ggplotly(p)
+```
+
+## Reference
+
+1- C. Sievert. Interactive Web-Based Data Visualization with R, plotly, and shiny. Chapman
+  and Hall/CRC Florida, 2020.
+2-   Wickham H, Averick M, Bryan J, Chang W, McGowan LD, François R, Grolemund G, Hayes
+  A, Henry L, Hester J, Kuhn M, Pedersen TL, Miller E, Bache SM, Müller K, Ooms J,
+  Robinson D, Seidel DP, Spinu V, Takahashi K, Vaughan D, Wilke C, Woo K, Yutani H
+  (2019). “Welcome to the tidyverse.” _Journal of Open Source Software_, *4*(43),
+  1686. doi:10.21105/joss.01686 <https://doi.org/10.21105/joss.01686>.

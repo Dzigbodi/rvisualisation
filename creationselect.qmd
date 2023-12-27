@@ -1,5 +1,5 @@
 ---
-title: "Creation, fusion et manipulation"
+title: "Manipulation des données"
 ---
 
 ```{r setup, include=FALSE}
@@ -466,3 +466,12 @@ Nous allons dans cet exercice manipuler les données l'immigration Canada relati
 
 5.  Utiliser la fonction `mutate()` pour imputer les variables manquantes.
 :::
+
+## Reference
+1.  Schauberger P, Walker A (2023). _openxlsx: Read, Write and Edit xlsx Files_. R package
+  version 4.2.5.2, <https://CRAN.R-project.org/package=openxlsx>.
+2.   Wickham H, Averick M, Bryan J, Chang W, McGowan LD, François R, Grolemund G, Hayes
+  A, Henry L, Hester J, Kuhn M, Pedersen TL, Miller E, Bache SM, Müller K, Ooms J,
+  Robinson D, Seidel DP, Spinu V, Takahashi K, Vaughan D, Wilke C, Woo K, Yutani H
+  (2019). “Welcome to the tidyverse.” _Journal of Open Source Software_, *4*(43),
+  1686. doi:10.21105/joss.01686 <https://doi.org/10.21105/joss.01686>.

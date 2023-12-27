@@ -1,5 +1,5 @@
 ---
-title: "Exercice sur ***dplyr***"
+title: "Exercice sur dplyr"
 ---
 
 ```{r setup, include=FALSE}

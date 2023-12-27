@@ -1,5 +1,5 @@
 ---
-title: "Expression régulière"
+title: "Expressions régulières"
 ---
 
 ```{r setup, include=FALSE}
