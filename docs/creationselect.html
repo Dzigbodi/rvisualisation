@@ -254,6 +254,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </li>
       </ul>
   </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true">
+ <span class="menu-text">Shiny Application</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./introdtoshiny.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction à Shiny</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
     </ul>
     </div>
 </nav>
@@ -292,6 +309,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#str_match" id="toc-str_match" class="nav-link" data-scroll-target="#str_match"><code>str_match</code></a></li>
   <li><a href="#str_extract" id="toc-str_extract" class="nav-link" data-scroll-target="#str_extract"><code>str_extract</code></a></li>
   <li><a href="#match-en-groupe" id="toc-match-en-groupe" class="nav-link" data-scroll-target="#match-en-groupe">Match en groupe</a></li>
+  </ul></li>
+  <li><a href="#correction-de-lexercice" id="toc-correction-de-lexercice" class="nav-link" data-scroll-target="#correction-de-lexercice">Correction de l’exercice</a>
+  <ul class="collapse">
+  <li><a href="#lecture-de-fichier" id="toc-lecture-de-fichier" class="nav-link" data-scroll-target="#lecture-de-fichier">Lecture de fichier</a></li>
   </ul></li>
   <li><a href="#reference" id="toc-reference" class="nav-link" data-scroll-target="#reference">Reference</a></li>
   </ul>
@@ -1174,6 +1195,102 @@ Exercice
 <li><p>Definir la lignes des dates comme variables</p></li>
 <li><p>Utiliser la fonction <code>mutate()</code> pour imputer les variables manquantes.</p></li>
 </ol>
+</div>
+</div>
+</section>
+</section>
+<section id="correction-de-lexercice" class="level2">
+<h2 class="anchored" data-anchor-id="correction-de-lexercice">Correction de l’exercice</h2>
+<section id="lecture-de-fichier" class="level3">
+<h3 class="anchored" data-anchor-id="lecture-de-fichier">Lecture de fichier</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb90"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb90-1"><a href="#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb90-2"><a href="#cb90-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(openxlsx)</span>
+<span id="cb90-3"><a href="#cb90-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-4"><a href="#cb90-4" aria-hidden="true" tabindex="-1"></a>mutatedate<span class="ot">&lt;-</span><span class="cf">function</span>(x,</span>
+<span id="cb90-5"><a href="#cb90-5" aria-hidden="true" tabindex="-1"></a>                     <span class="at">inidate=</span><span class="fu">as.Date</span>(<span class="st">"2015/01/01"</span>), </span>
+<span id="cb90-6"><a href="#cb90-6" aria-hidden="true" tabindex="-1"></a>                     <span class="at">othername=</span><span class="fu">c</span>(<span class="st">"Province"</span>,<span class="st">"ProgramGroup"</span>,<span class="st">"ProgramType"</span>,<span class="st">"ProgramDetail"</span>)){</span>
+<span id="cb90-7"><a href="#cb90-7" aria-hidden="true" tabindex="-1"></a>  aa<span class="ot">&lt;-</span><span class="fu">sort</span>(<span class="fu">which</span>(<span class="fu">is.na</span>(x)))</span>
+<span id="cb90-8"><a href="#cb90-8" aria-hidden="true" tabindex="-1"></a>  nn<span class="ot">&lt;-</span><span class="fu">sort</span>(<span class="fu">which</span>(<span class="sc">!</span><span class="fu">is.na</span>(x)))</span>
+<span id="cb90-9"><a href="#cb90-9" aria-hidden="true" tabindex="-1"></a>  n<span class="ot">&lt;-</span><span class="fu">length</span>(nn)</span>
+<span id="cb90-10"><a href="#cb90-10" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb90-11"><a href="#cb90-11" aria-hidden="true" tabindex="-1"></a>  xdate<span class="ot">&lt;-</span><span class="fu">seq.Date</span>(<span class="at">from=</span>inidate, <span class="at">length.out =</span> n, <span class="at">by=</span><span class="st">"month"</span>)</span>
+<span id="cb90-12"><a href="#cb90-12" aria-hidden="true" tabindex="-1"></a>  x[nn]<span class="ot">&lt;-</span><span class="fu">as.character</span>(xdate)</span>
+<span id="cb90-13"><a href="#cb90-13" aria-hidden="true" tabindex="-1"></a>  x[aa]<span class="ot">&lt;-</span><span class="fu">as.character</span>(othername)</span>
+<span id="cb90-14"><a href="#cb90-14" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x)</span>
+<span id="cb90-15"><a href="#cb90-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb90-16"><a href="#cb90-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-17"><a href="#cb90-17" aria-hidden="true" tabindex="-1"></a>fillempty<span class="ot">&lt;-</span><span class="cf">function</span>(x){</span>
+<span id="cb90-18"><a href="#cb90-18" aria-hidden="true" tabindex="-1"></a>  x<span class="ot">&lt;-</span><span class="fu">str_trim</span>(x)</span>
+<span id="cb90-19"><a href="#cb90-19" aria-hidden="true" tabindex="-1"></a>  j<span class="ot">&lt;-</span><span class="dv">1</span></span>
+<span id="cb90-20"><a href="#cb90-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">while</span>(j<span class="sc">&lt;</span><span class="fu">length</span>(x)){</span>
+<span id="cb90-21"><a href="#cb90-21" aria-hidden="true" tabindex="-1"></a>    m<span class="ot">&lt;-</span><span class="dv">0</span></span>
+<span id="cb90-22"><a href="#cb90-22" aria-hidden="true" tabindex="-1"></a>    M<span class="ot">&lt;-</span><span class="fu">c</span>()</span>
+<span id="cb90-23"><a href="#cb90-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span>((<span class="fu">is.na</span>(x[j])<span class="sc">|</span>x[j]<span class="sc">==</span><span class="st">""</span>) <span class="sc">&amp;</span> j<span class="sc">&lt;</span><span class="fu">length</span>(x) ){</span>
+<span id="cb90-24"><a href="#cb90-24" aria-hidden="true" tabindex="-1"></a>      m<span class="ot">&lt;-</span>m<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb90-25"><a href="#cb90-25" aria-hidden="true" tabindex="-1"></a>      j<span class="ot">&lt;-</span>j<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb90-26"><a href="#cb90-26" aria-hidden="true" tabindex="-1"></a>      M[m]<span class="ot">&lt;-</span>j<span class="dv">-1</span></span>
+<span id="cb90-27"><a href="#cb90-27" aria-hidden="true" tabindex="-1"></a>      <span class="co">#if(j==length(x)) break</span></span>
+<span id="cb90-28"><a href="#cb90-28" aria-hidden="true" tabindex="-1"></a>      </span>
+<span id="cb90-29"><a href="#cb90-29" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb90-30"><a href="#cb90-30" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb90-31"><a href="#cb90-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span>(m<span class="sc">&lt;</span><span class="fu">length</span>(x) <span class="sc">&amp;</span> m<span class="sc">&gt;</span><span class="dv">0</span>){</span>
+<span id="cb90-32"><a href="#cb90-32" aria-hidden="true" tabindex="-1"></a>      <span class="cf">for</span>(i <span class="cf">in</span> M){</span>
+<span id="cb90-33"><a href="#cb90-33" aria-hidden="true" tabindex="-1"></a>        x[i]<span class="ot">&lt;-</span><span class="fu">str_trim</span>(<span class="fu">str_remove_all</span>(x[j],<span class="st">"- Total|- total|Total|total"</span>))</span>
+<span id="cb90-34"><a href="#cb90-34" aria-hidden="true" tabindex="-1"></a>      }</span>
+<span id="cb90-35"><a href="#cb90-35" aria-hidden="true" tabindex="-1"></a>      <span class="co">#x[j]&lt;-""</span></span>
+<span id="cb90-36"><a href="#cb90-36" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb90-37"><a href="#cb90-37" aria-hidden="true" tabindex="-1"></a>    j<span class="ot">&lt;-</span>j<span class="sc">+</span><span class="dv">1</span></span>
+<span id="cb90-38"><a href="#cb90-38" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb90-39"><a href="#cb90-39" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb90-40"><a href="#cb90-40" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(x)</span>
+<span id="cb90-41"><a href="#cb90-41" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb90-42"><a href="#cb90-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-43"><a href="#cb90-43" aria-hidden="true" tabindex="-1"></a>ProvImmCatfile<span class="ot">&lt;-</span><span class="st">"https://www.ircc.canada.ca/opendata-donneesouvertes/data/EN_ODP-PR-ProvImmCat.xlsx"</span></span>
+<span id="cb90-44"><a href="#cb90-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-45"><a href="#cb90-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-46"><a href="#cb90-46" aria-hidden="true" tabindex="-1"></a>df<span class="ot">&lt;-</span><span class="fu">read.xlsx</span>(ProvImmCatfile, <span class="at">startRow =</span> <span class="dv">3</span>)</span>
+<span id="cb90-47"><a href="#cb90-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-48"><a href="#cb90-48" aria-hidden="true" tabindex="-1"></a>df<span class="ot">&lt;-</span>df<span class="sc">|&gt;</span><span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">everything</span>(), <span class="sc">~</span> <span class="fu">str_remove_all</span>(.,<span class="st">'xml:space="preserve"&gt;'</span>)))</span>
+<span id="cb90-49"><a href="#cb90-49" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb90-50"><a href="#cb90-50" aria-hidden="true" tabindex="-1"></a>df<span class="ot">&lt;-</span> <span class="fu">t</span>(<span class="fu">t</span>(df<span class="sc">|&gt;</span><span class="fu">select</span>(<span class="sc">!</span><span class="fu">where</span>(<span class="sc">~</span><span class="fu">any</span>(<span class="fu">grepl</span>(<span class="st">"Q</span><span class="sc">\\</span><span class="st">d</span><span class="sc">\\</span><span class="st">s</span><span class="sc">\\</span><span class="st">w+|</span><span class="sc">\\</span><span class="st">d{4}</span><span class="sc">\\</span><span class="st">s</span><span class="sc">\\</span><span class="st">w+"</span>,.))<span class="sc">==</span>T))<span class="sc">|&gt;</span></span>
+<span id="cb90-51"><a href="#cb90-51" aria-hidden="true" tabindex="-1"></a>  <span class="fu">slice</span>(<span class="sc">-</span><span class="dv">1</span>))<span class="sc">|&gt;</span><span class="fu">as.data.frame</span>()<span class="sc">|&gt;</span></span>
+<span id="cb90-52"><a href="#cb90-52" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="dv">1</span>,<span class="sc">~</span> <span class="fu">mutatedate</span>(.))))<span class="sc">|&gt;</span><span class="fu">as.data.frame</span>()</span>
+<span id="cb90-53"><a href="#cb90-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-54"><a href="#cb90-54" aria-hidden="true" tabindex="-1"></a>colname<span class="ot">&lt;-</span><span class="fu">unlist</span>(df[<span class="dv">1</span>,] )  </span>
+<span id="cb90-55"><a href="#cb90-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-56"><a href="#cb90-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-57"><a href="#cb90-57" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(df)<span class="ot">&lt;-</span>colname   </span>
+<span id="cb90-58"><a href="#cb90-58" aria-hidden="true" tabindex="-1"></a>df<span class="ot">&lt;-</span>df[<span class="sc">-</span><span class="dv">1</span>,]</span>
+<span id="cb90-59"><a href="#cb90-59" aria-hidden="true" tabindex="-1"></a>df<span class="ot">&lt;-</span>df<span class="sc">|&gt;</span></span>
+<span id="cb90-60"><a href="#cb90-60" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="fu">across</span>(<span class="fu">c</span>(Province,ProgramGroup,ProgramType),<span class="sc">~</span><span class="fu">fillempty</span>(.)))<span class="sc">|&gt;</span></span>
+<span id="cb90-61"><a href="#cb90-61" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(ProgramDetail))<span class="sc">|&gt;</span></span>
+<span id="cb90-62"><a href="#cb90-62" aria-hidden="true" tabindex="-1"></a>  <span class="fu">gather</span>(<span class="at">key=</span><span class="st">"Date"</span>, <span class="at">value=</span><span class="st">"Value"</span>, <span class="sc">-</span>Province, <span class="sc">-</span>ProgramGroup, <span class="sc">-</span>ProgramType,<span class="sc">-</span>ProgramDetail)<span class="sc">|&gt;</span></span>
+<span id="cb90-63"><a href="#cb90-63" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Value=</span><span class="fu">as.numeric</span>(<span class="fu">str_replace_all</span>(Value,<span class="st">"[-]"</span>,<span class="st">"0"</span>)), <span class="at">Date=</span><span class="fu">as.Date</span>(Date))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: There was 1 warning in `mutate()`.
+ℹ In argument: `Value = as.numeric(str_replace_all(Value, "[-]", "0"))`.
+Caused by warning:
+! NAs introduits lors de la conversion automatique</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb92"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb92-1"><a href="#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(df)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                   Province ProgramGroup    ProgramType
+1 Newfoundland and Labrador     Economic Worker Program
+2 Newfoundland and Labrador     Economic Worker Program
+3 Newfoundland and Labrador     Economic Worker Program
+4 Newfoundland and Labrador     Economic Worker Program
+5 Newfoundland and Labrador     Economic Worker Program
+6 Newfoundland and Labrador     Economic       Business
+                        ProgramDetail       Date Value
+1 Atlantic Immigration Pilot Programs 2015-01-01     0
+2                 Canadian Experience 2015-01-01     0
+3                           Caregiver 2015-01-01     0
+4                       Skilled Trade 2015-01-01     0
+5                      Skilled Worker 2015-01-01     0
+6                       Self-Employed 2015-01-01     0</code></pre>
 </div>
 </div>
 </section>

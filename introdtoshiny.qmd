@@ -1,0 +1,49 @@
+---
+title: "Introduction à Shiny"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+
+Ce module introduit les concepts de shiny R. Shiny R est une librairie de R qui permet de développer un tableau de bord.
+
+## Model de base
+
+Shiny App est une application web (`ui`) connecté à un programme controlé par une session R (`server`). Ainsi l'utilisateur est capable de manipuler la page web (`ui`) qui est connecté à la session `server`.
+
+Une application Shiny simple a la structure suivante:
+
+::: callout-note
+library(shiny)
+
+shinyApp(ui=fluidPage(
+
+numericInput(inputId="n", label="Taille de l'échanitillon", value=25),
+
+plotOutput(outputId="hist")
+
+),
+
+server=function(input, output, session){ output$hist<-renderPlot({ hist(rnorm(input$n), main=paste("Histogramme avec", input\$n)) })},
+
+options = list(height = 500)
+
+)
+:::
+
+-   la fonction `ui` permet de personnaliser les fonctions de mise en page
+
+-   `numericInput()` c'est une fonction qui permet de créer les menus input. Il y a plusieurs fonctions input. Dans la fonction input il est important de specifier la variable inputId:
+
+-   la fonction `plotOutput()` permet de visualiser l'objet de sortie
+
+-   `server` permet de commander les ouput en fonction des input
+
+-   `renderPlot()` : la fonction qui permet de dessiner le graphique avant de l'envoyer dans l'objet output
+
+-   `input$n` permet d'appeler une variable input
+
+-   `shinyApp()` utilise les fonctions `ui` et `server` pour construire l'application interactive.

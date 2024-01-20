@@ -150,6 +150,7 @@ fig<-fig|>layout(title='Type de programme economique en 2022',
 fig
 ```
 
+
 -   Graphique en bar Pour le graphique en bar on utilise le type="bar".
 
 ```{r}

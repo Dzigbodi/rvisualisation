@@ -467,6 +467,80 @@ Nous allons dans cet exercice manipuler les données l'immigration Canada relati
 5.  Utiliser la fonction `mutate()` pour imputer les variables manquantes.
 :::
 
+## Correction de l'exercice
+
+### Lecture de fichier
+```{r}
+library(tidyverse)
+library(openxlsx)
+
+mutatedate<-function(x,
+                     inidate=as.Date("2015/01/01"), 
+                     othername=c("Province","ProgramGroup","ProgramType","ProgramDetail")){
+  aa<-sort(which(is.na(x)))
+  nn<-sort(which(!is.na(x)))
+  n<-length(nn)
+  
+  xdate<-seq.Date(from=inidate, length.out = n, by="month")
+  x[nn]<-as.character(xdate)
+  x[aa]<-as.character(othername)
+  return(x)
+}
+
+fillempty<-function(x){
+  x<-str_trim(x)
+  j<-1
+  while(j<length(x)){
+    m<-0
+    M<-c()
+    while((is.na(x[j])|x[j]=="") & j<length(x) ){
+      m<-m+1
+      j<-j+1
+      M[m]<-j-1
+      #if(j==length(x)) break
+      
+    }
+    
+    if(m<length(x) & m>0){
+      for(i in M){
+        x[i]<-str_trim(str_remove_all(x[j],"- Total|- total|Total|total"))
+      }
+      #x[j]<-""
+    }
+    j<-j+1
+  }
+  
+  return(x)
+}
+
+ProvImmCatfile<-"https://www.ircc.canada.ca/opendata-donneesouvertes/data/EN_ODP-PR-ProvImmCat.xlsx"
+
+
+df<-read.xlsx(ProvImmCatfile, startRow = 3)
+
+df<-df|>mutate(across(everything(), ~ str_remove_all(.,'xml:space="preserve">')))
+ 
+df<- t(t(df|>select(!where(~any(grepl("Q\\d\\s\\w+|\\d{4}\\s\\w+",.))==T))|>
+  slice(-1))|>as.data.frame()|>
+  mutate(across(1,~ mutatedate(.))))|>as.data.frame()
+
+colname<-unlist(df[1,] )  
+
+
+colnames(df)<-colname   
+df<-df[-1,]
+df<-df|>
+  mutate(across(c(Province,ProgramGroup,ProgramType),~fillempty(.)))|>
+  filter(!is.na(ProgramDetail))|>
+  gather(key="Date", value="Value", -Province, -ProgramGroup, -ProgramType,-ProgramDetail)|>
+  mutate(Value=as.numeric(str_replace_all(Value,"[-]","0")), Date=as.Date(Date))
+```
+
+```{r}
+head(df)
+```
+
+
 ## Reference
 1.  Schauberger P, Walker A (2023). _openxlsx: Read, Write and Edit xlsx Files_. R package
   version 4.2.5.2, <https://CRAN.R-project.org/package=openxlsx>.

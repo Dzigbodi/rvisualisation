@@ -13,7 +13,7 @@ library(lubridate)
 ```
 
 # Introduction
-Ce module est destinée à aider les débutants en R à se familiariser la visualisation avec `highcharter`. Nous allons utiliser la librairie `highcharter` et `tidyverse`, `lubridate`.
+Ce module est destiné à aider les débutants en R à se familiariser la visualisation avec `highcharter`. Nous allons utiliser la librairie `highcharter` et `tidyverse`, `lubridate`.
 
 ## Les données pour la visualisation
 Nous allons utiliser les données de la [BCEAO](https://edenpub.bceao.int/tableauPredefini.php) sur l'inflation pour notre exercice de visualisation.
