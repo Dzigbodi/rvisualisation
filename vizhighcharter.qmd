@@ -1,0 +1,448 @@
+---
+title: "Visualisation: Highcharter"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```{r, echo=TRUE, message=FALSE}
+library(highcharter)
+library(tidyverse)
+library(lubridate)
+```
+
+# Introduction
+Ce module est destinée à aider les débutants en R à se familiariser la visualisation avec `highcharter`. Nous allons utiliser la librairie `highcharter` et `tidyverse`, `lubridate`.
+
+## Les données pour la visualisation
+Nous allons utiliser les données de la [BCEAO](https://edenpub.bceao.int/tableauPredefini.php) sur l'inflation pour notre exercice de visualisation.
+
+
+```{r,  message=FALSE}
+prix_df_all<-read.csv("./data/Prix.csv")|>
+             mutate(Date=as.Date(Date, format="%m/%d/%Y"))|>
+             left_join(read.csv("./data/Dictionnaire.csv",
+                                encoding="latin1"),
+                       by=c("CODE"="SERIE"))
+
+```
+
+### Nuage de points
+#### Extraction des données
+```{r}
+temp<-prix_df_all|>
+      filter(substr(COMMODITE,1,2)=="13", PAYS=="TOGO")|>
+      select(Date, Prix, SOURCE)
+```
+
+#### Première étape
+```{r}
+plt<-highchart()|>
+     hc_title(text="Indice des prix à la consommation, Togo")|>
+     hc_subtitle(text=unlist(unique(temp$SOURCE)))|>
+     hc_xAxis(title=list(text="Date"), labels=list(format='{value:%Y-%m}'))|>
+     hc_yAxis(title=list(text="Indice des prix"))
+  
+plt
+```
+
+#### Deuxième étape
+
+```{r}
+plt<-plt|>
+  hc_add_series(name="IPC",
+                type="scatter",
+                data=temp,
+                hcaes(x=Date, y=Prix),
+                color="red")|>
+  hc_legend(enabled=FALSE)
+plt
+```
+
+#### Troisième étape : tooltip
+
+```{r}
+plt<-plt|>
+  hc_tooltip(useHTML=TRUE,
+             headerFormat="",
+             pointFormat="{series.name}<br>Date: {point.Date}<br> Prix: {point.Prix: , .1f}")
+plt
+```
+
+### Graphique en ligne
+
+```{r}
+plt<-highchart()|>
+     hc_title(text="Indice des prix à la consommation, Togo")|>
+     hc_subtitle(text=unlist(unique(temp$SOURCE)))|>
+     hc_xAxis(title=list(text="Date"), labels=list(format='{value:%Y-%m}'))|>
+     hc_yAxis(title=list(text="Indice des prix"))|>
+    hc_legend(enabled=FALSE)|>
+    hc_add_series(name="IPC",
+                type="line",
+                data=temp,
+                hcaes(x=Date, y=Prix),
+                color="red")|>
+  hc_tooltip(useHTML=TRUE,
+             headerFormat="",
+             pointFormat="{series.name}<br>Date: {point.Date}<br> Prix: {point.Prix: , .1f}")
+plt
+  
+  
+```
+
+### Pluieurs graphiques sur la même figure
+
+```{r}
+temp_all<-prix_df_all|>
+      filter(substr(COMMODITE,1,2)=="13", year(Date)>=2008)|>
+      select(PAYS,Date, Prix, SOURCE)
+```
+
+```{r}
+plt<-highchart()|>
+     hc_title(text="Indice des prix à la consommation, UEMOA")|>
+     hc_subtitle(text=unlist(unique(temp$SOURCE)))|>
+     hc_xAxis(title=list(text="Date"), labels=list(format='{value:%Y-%m}'))|>
+     hc_yAxis(title=list(text="Indice des prix"))|>
+     hc_legend(enabled=TRUE)|>
+     hc_add_series(data=temp_all,
+                   type="line",
+                   mapping=hcaes(x=Date, y=Prix, group=PAYS, name=PAYS, color=PAYS))|>
+  hc_tooltip(useHTML=TRUE,
+             headerFormat="",
+             pointFormat="{series.name}<br>Date: {point.Date}<br> Prix: {point.Prix: , .1f}")
+  
+plt
+```
+
+### Graphique en barre
+
+```{r}
+temp_gr<-prix_df_all|>
+         filter(PAYS=="TOGO", year(Date)==2021, month(Date)==12)|>
+         select(COMMODITE, Date, Prix, SOURCE)
+```
+
+```{r}
+commodite_label<-unique(unlist(temp_gr$COMMODITE))
+
+plt_gr<-highchart()|>
+        hc_title(text="Indice des prix à consommation selon les commodités, Togo")|>
+        hc_subtitle(text=unlist(unique(temp_gr$SOURCE)))|>
+        hc_xAxis(categories=commodite_label)|>
+        hc_yAxis(title=list(text="Indice des prix"))|>
+        hc_legend(enabled=FALSE)|>
+        hc_add_series(
+                data=temp_gr,
+                type="column",
+                hcaes(x=COMMODITE, y=Prix, name=COMMODITE, color=COMMODITE))|>
+  hc_tooltip(useHTML=TRUE, headerFormat="",
+             pointFormat="{point.COMMODITE}<br> Date: {point.Date}<br> Prix: {point.Prix: , .1f}")
+  
+plt_gr
+
+```
+
+
+### Barre en horizontal
+
+```{r}
+temp_gr<-temp_gr|>group_by(COMMODITE)
+
+commodite_label<-unique(unlist(temp_gr$COMMODITE))
+  
+plt_hr<-highchart()|>
+        hc_chart(type="bar")|>
+        hc_title(text="Indice des prix à consommation selon les commodités, Togo")|>
+        hc_subtitle(text=unlist(unique(temp_gr$SOURCE)))|>
+        hc_xAxis(categories=commodite_label)|>
+        hc_yAxis(title=list(text="Indice des prix"))|>
+       hc_add_series(data=temp_gr$Prix)|>
+       hc_tooltip(useHTML=TRUE, pointFormat="Prix: {point.y:, .1f}")|>
+       hc_legend(enabled=FALSE)
+
+plt_hr
+  
+```
+
+
+### Barre dynamique
+
+```{r}
+temp_ann<-prix_df_all|>
+          filter(PAYS=="TOGO")|>
+          select(COMMODITE,Date,Prix,SOURCE)|>
+          mutate(Annee=year(Date))
+
+temp_ann_gr<-temp_ann|>
+           group_by(COMMODITE,Annee)|>
+           summarise(Prix=mean(Prix, na.rm=T), .groups = "drop")|>
+           group_by(COMMODITE)|>
+           do(sequence=.$Prix)|>
+           ungroup()|>
+           select(-COMMODITE)|>
+           list_parse()
+
+xaxis<-list(categories=sort(unique(unlist(temp_ann$COMMODITE))))
+Annee<- seq(from=min(temp_ann$Annee), to=max(temp_ann$Annee), by=1)
+```
+
+### Ajouter le thème avec `hc_add_theme`
+```{r}
+plt_dym<-highchart()|>
+         hc_chart(type="bar", marginBottom=100)|>
+         hc_title(text="Indice des prix à la consommation, Comparaison dynamique")|>
+         hc_subtitle(text=paste0(unlist(unique(temp_ann$SOURCE)), ", Togo"))|>
+         hc_xAxis(xaxis)|>
+         hc_legend(enabled=FALSE)|>
+         hc_add_series(name="IPC",
+                       data=temp_ann_gr,
+                       color="red")|>
+         hc_motion(enable=TRUE, 
+                   labels=Annee,
+                   series=c(0:12),
+                   autoplay=TRUE, 
+                   updateInterval=1)|>
+        hc_tooltip(useHTML=TRUE, pointFormat="Prix: {point.y: ,.1f}")|>
+    hc_add_theme(hc_theme_ft())
+
+plt_dym
+  
+
+```
+
+### Map avec highcharter
+
+#### Télécharger le fichier de javascrip du map
+Aller sur le site https://code.highcharts.com/mapdata/ pour télécharge le map de votre choix. Ici nous téléchargeons le fichier javascript `.js` de l'Afrique. 
+```{r}
+map_afrique_df<-download_map_data(url = "https://code.highcharts.com/mapdata/custom/africa.js", showinfo = FALSE, quiet = TRUE)
+```
+
+#### Préparer les données
+Extraire les données du fichier javascript
+```{r}
+Afrique_map_data<-get_data_from_map(map_afrique_df)
+
+```
+
+```{r}
+print(Afrique_map_data$name)
+```
+
+```{r}
+Vecteur_pays<-c("Senegal"="SENEGAL",
+                "Burkina Faso"="BURKINA FASO",
+                "Benin"="BENIN",
+                "Ivory Coast"="COTE D'IVOIRE",
+                "Togo"="TOGO",
+                "Niger"="NIGER",
+                "Guinea Bissau"="GUINEE BISSAU",
+                "Mali" ="MALI")
+print(Vecteur_pays)
+
+
+```
+
+```{r}
+prix_df_map<-prix_df_all|>
+              filter(substr(COMMODITE,1,2)=="13")|>
+              mutate(Annee=year(Date))|>
+              group_by(PAYS, Annee)|>
+              summarise(Prix=mean(Prix, na.rm=TRUE), .groups="drop")|>
+              rowwise()|>
+              mutate(mappays=names(Vecteur_pays)[str_trim(PAYS)==Vecteur_pays])|>
+              filter(Annee==2022)|>
+              ungroup()|>
+              select(mappays,Prix)
+
+
+             
+```
+
+
+
+```{r}
+(min_prix<-min(prix_df_map$Prix))
+(max_prix<-max(prix_df_map$Prix))
+```
+
+#### Dessiner le Map avec `hc_add_series_map`
+```{r}
+plt_map<-highchart()|>
+        hc_title(text="Indice des prix à la consommation")|>
+        hc_subtitle(text="Pays de l'UEMOA")|>
+        hc_add_series_map(map=map_afrique_df,
+                          df =prix_df_map,
+                          name="IPC",
+                          value="Prix",
+                          joinBy = c("name","mappays"),
+                          dataLabels=list(enabled=TRUE, format="{point.name}"))|>
+     hc_colorAxis(
+       min=min_prix,
+       max=max_prix,
+       type="logarithmic",
+       minColor="green",
+       maxColor="red"
+     )|>
+  hc_tooltip(useHTML=TRUE, pointFormat="Prix: {point.value:, .1f}")|>
+  hc_mapNavigation(enabled=TRUE)
+
+plt_map
+   
+```
+
+
+#### Dessiner uniquement la zone concernée
+Nous allons interroger l'objet `features` de `map_afrique_df`
+```{r}
+features<-map_afrique_df$features
+
+```
+
+```{r}
+names(features[[1]])
+```
+
+```{r}
+names(features[[1]]$properties)
+```
+
+
+#### Identification des pays
+```{r}
+id_pays<-t(sapply(seq_len(length(features)), function(i){
+  c(Id=i,name=features[[i]]$properties$name)
+}))|>
+  as.data.frame()|>
+  filter(name%in%names(Vecteur_pays))|>
+  mutate(Id=as.numeric(Id))|>
+  select(Id)
+```
+
+#### Extraction des pays de l'UEMOA
+```{r}
+map_uemoa_df<-map_afrique_df
+
+map_uemoa_df$features<-map_afrique_df$features[unlist(id_pays)]
+
+```
+
+#### Redessiner le map
+
+```{r}
+plt_map_u<-highchart()|>
+        hc_title(text="Indice des prix à la consommation")|>
+        hc_subtitle(text="Pays de l'UEMOA")|>
+        hc_add_series_map(map=map_uemoa_df,
+                          df =prix_df_map,
+                          name="IPC",
+                          value="Prix",
+                          joinBy = c("name","mappays"),
+                          dataLabels=list(enabled=TRUE, format="{point.name}"))|>
+     hc_colorAxis(
+       min=min_prix,
+       max=max_prix,
+       type="logarithmic",
+       minColor="green",
+       maxColor="red"
+     )|>
+  hc_tooltip(useHTML=TRUE, pointFormat="Prix: {point.value:, .1f}")|>
+  hc_mapNavigation(enabled=TRUE)
+
+plt_map_u
+```
+
+###Graphique Camembert
+
+#### Importation des données
+
+```{r}
+library(openxlsx)
+Valeur_ajoutee<-c("- Agriculture. elevage. sylviculture. peche",
+                  "- Industrie. mines. energie. BTP",
+                  "- Services")
+
+PIB_C<-read.xlsx("./data/PIB.xlsx", sheet="PIB_C")|>
+      gather(key="ANNEE", value="VALEUR", -CODE)|>
+      mutate(VALEUR=as.numeric(VALEUR),CODE=str_trim(CODE))
+
+Dictionnaire_C<-read.xlsx("./data/PIB.xlsx",sheet="Dictionnaire_C")|>
+                mutate(CODE=str_trim(CODE))
+
+
+PIB_VA<-PIB_C|>
+        left_join(Dictionnaire_C, by="CODE")|>
+        filter(LIBELLE%in%Valeur_ajoutee,ANNEE==2022)|>
+        select(-ANNEE)|>
+        group_by(PAYS)|>
+        mutate(Prop=100*VALEUR/sum(VALEUR, na.rm=T))|>
+        ungroup()
+        
+
+PIB_AVT<-PIB_VA|>group_by(PAYS)|>
+         summarise(VA=sum(VALEUR, na.rm=TRUE), .groups="drop")|>
+         mutate(Prop=100*VA/sum(VA))
+    
+
+```
+
+#### Camembert simple
+```{r}
+plt_cam<-highchart()|>
+         hc_title(text="Valeur Ajoutée Brute en 2022, Prix Courant")|>
+        hc_subtitle(text="Pays de l'UEMOA")|>
+        hc_caption(text="Source: BCEAO")|>
+        hc_add_series(data=PIB_AVT,
+                      type="pie",
+                      innerSize="20%",
+                      height="80%",
+                      hcaes(y=Prop, name=PAYS, color=PAYS),
+                      tooltip=list(useHTML=TRUE, pointFormat="Part: {point.Prop: , .1f}%<br> Valeur Ajoutée: {point.VA:, .0f} milliards de FCFA"),
+                      dataLabels=list(enabled=TRUE,
+                                      align='center',
+                                      format="{point.name}<br> Part: {point.y: , .1f}%<br> Valeur Ajoutée: {point.VA:, .0f} milliards de FCFA"))
+plt_cam
+
+```
+
+### Explorer le Camembert hiérarchique (drilldown)
+
+#### Drilldown data.frame
+
+```{r}
+
+PIB_drilldown<-PIB_VA|>
+               group_nest(PAYS)|>
+               mutate(id=PAYS,
+                      type="pie",
+                      innerSize="20%",
+                      height="80%",
+                      data=map(data, mutate, name=LIBELLE, y=Prop, VA=VALEUR),
+                      data=map(data, list_parse))
+```
+
+```{r}
+plt_cam_drill<-highchart()|>
+         hc_title(text="Valeur Ajoutée Brute par Secteur en 2022, Prix Courant")|>
+        hc_subtitle(text="Pays de l'UEMOA")|>
+        hc_caption(text="Source: BCEAO")|>
+        hc_add_series(data=PIB_AVT,
+                      type="pie",
+                      innerSize="20%",
+                      height="80%",
+                      hcaes(y=Prop, name=PAYS, color=PAYS, drilldown=PAYS))|>
+  hc_drilldown(allowPointDrilldown=TRUE,
+               series=list_parse(PIB_drilldown),
+               drillUpButton=list(relative='spacinBox', position=list(x=0, y=-15)))|>
+  hc_plotOptions(pie=list(
+                      tooltip=list(useHTML=TRUE, pointFormat="Part: {point.Prop: , .1f}%<br> Valeur Ajoutée: {point.VA:, .0f} milliards de FCFA"),
+                      dataLabels=list(enabled=TRUE,
+                                      align='center',
+                                      format="{point.name}<br> Part: {point.y: , .1f}%<br> Valeur Ajoutée: {point.VA:, .0f} milliards de FCFA")))
+
+plt_cam_drill
+```
+

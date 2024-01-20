@@ -26,6 +26,7 @@ website:
           - href: exoggplot.qmd
           - href: vizplotly.qmd
           - href: exoplotly.qmd
+          - href: vizhighcharter.qmd
           
           
 format:
